@@ -1,5 +1,5 @@
 services:
-  postgres:
+  clt-db:
     image: postgres:16-alpine
     container_name: clt-postgres
     environment:
@@ -22,10 +22,10 @@ services:
       dockerfile: Dockerfile
     container_name: clt-backend
     depends_on:
-      postgres:
+      clt-db:
         condition: service_healthy
     environment:
-      DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-clt}
+      DB_URL: jdbc:postgresql://clt-db:5432/${DB_NAME:-clt}
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-Paraguay2026}
       JWT_SECRET: ${JWT_SECRET:-CltSecretKeyParaJWT256BitsMinimoParaSeguridadHS256MuyLarga}
@@ -36,7 +36,7 @@ services:
       MAIL_USER: ${MAIL_USER:-jhonathanjoel.bernal@gmail.com}
       MAIL_PASSWORD: ${MAIL_PASSWORD:-iyqm jcph pmjo enzs}
     ports:
-      - "8081:8080"
+      - "8080:8080"
 
   frontend:
     build:
