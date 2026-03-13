@@ -1,0 +1,91 @@
+.example-container {
+  height: calc(100vh - 360px);
+  overflow: auto;
+}
+
+.block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.oms-historial-subtitle {
+  margin: 0 0 1rem;
+  color: var(--text-muted, #666);
+  font-size: 0.95rem;
+}
+
+.oms-historial-table {
+  width: 100%;
+}
+
+::ng-deep .oms-historial-table .mat-mdc-header-row {
+  background-color: #556cec;
+}
+
+::ng-deep .oms-historial-table .mat-mdc-header-row .mat-mdc-header-cell {
+  color: #fff;
+}
+
+::ng-deep .oms-historial-table .mat-mdc-row {
+  height: 44px;
+}
+
+.cmd-type {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.badge-danger {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.oms-historial-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+}
+
+.pagination-info {
+  font-size: 0.9rem;
+  color: var(--text-muted, #666);
+}
+
+.oms-historial-loading,
+.oms-historial-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 1rem;
+  color: var(--text-muted, #666);
+}
+
+.oms-historial-error mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #f44336;
+}

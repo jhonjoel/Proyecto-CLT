@@ -1,0 +1,32 @@
+@if (!showLoading) {
+
+<mat-form-field class="example-full-width">
+  <!-- ... El código del select con loading ... -->
+  <mat-select
+    [formControl]="usuarioCtrl"
+    placeholder="{{ searchLabel }}"
+    #singleSelect
+    (selectionChange)="onUsuarioSelected($event.value)"
+  >
+    <ngx-mat-select-search
+      [formControl]="usuarioFilterCtrl"
+      noEntriesFoundLabel="'No se encontraron resultados'"
+      placeholderLabel="{{ searchUser }}"
+    ></ngx-mat-select-search>
+    <mat-option *ngIf="showLoading" class="loading-option" disabled>
+      <mat-spinner diameter="16"></mat-spinner> Cargando usuarios...
+    </mat-option>
+    <mat-option
+      *ngFor="let usuario of filteredUsuarios | async"
+      [value]="usuario"
+    >
+      {{ usuario.nombre }}
+      {{ usuario.apellido }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+} @if (showLoading) {
+<div class="loading-indicator">
+  <mat-spinner diameter="30"></mat-spinner>
+</div>
+}

@@ -1,0 +1,210 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="">
+        <mat-expansion-panel-header class="mat-expansion-panel-header-no-hover">
+          <mat-icon> </mat-icon>
+          <span> Agregar Asignacion</span>
+        </mat-expansion-panel-header>
+
+        <div class="container form-control">
+          <label>Punto de venta</label>
+          <app-select-ocrd
+            (OcrdSeleccionado)="idOcrdSeleccionado($event)"
+          ></app-select-ocrd>
+          <label>Promotor</label>
+
+          <app-select-usuario
+            #selectorPromotor
+            (usuarioSeleccionado)="idPromotorSeleccionado($event)"
+            [searchLabel]="'Selecciona promotor'"
+            [searchUser]="'Encuentra al promotor'"
+          ></app-select-usuario>
+          <label>Supervisor</label>
+          <app-select-usuario
+            #selectorSupervisor
+            (usuarioSeleccionado)="idSupervisorSeleccionado($event)"
+            [searchLabel]="'Selecciona supervisor'"
+            [searchUser]="'Encuentra al supervisor'"
+          ></app-select-usuario>
+
+          <label>Tipo</label>
+          <app-tipo-asignacion-usu-pv
+            (tipoSeleccionado)="tipoSeleccionado($event)"
+          >
+          </app-tipo-asignacion-usu-pv>
+
+          <mat-form-field>
+            <mat-label>Ingrese rango de fechas</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input
+                matStartDate
+                placeholder="Start date"
+                [(ngModel)]="startDate"
+              />
+              <input matEndDate placeholder="End date" [(ngModel)]="endDate" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+
+          <div class="modal-footer align-right">
+            <button
+              *ngIf="!isLoading"
+              mat-raised-button
+              color="primary"
+              (click)="registrar()"
+            >
+              <mat-icon>track_changes</mat-icon> Agregar
+            </button>
+            <button mat-raised-button color="primary" *ngIf="isLoading">
+              Agregando...
+              <mat-icon
+                ><mat-spinner color="accent" diameter="19"> </mat-spinner
+              ></mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="ngxTableHeader">
+                  <ul class="header-buttons-left ms-0 mb-0">
+                    <li class="dropdown">
+                      <h2>Asignacion</h2>
+                    </li>
+                    <li class="dropdown m-l-20">
+                      <label for="search-input"
+                        ><i class="material-icons search-icon">search</i></label
+                      >
+                      <input
+                        placeholder="Buscar"
+                        type="text"
+                        class="browser-default search-field"
+                        (keyup)="filterDatatable($event)"
+                        aria-label="Search box"
+                      />
+                    </li>
+                  </ul>
+                  <ul class="header-buttons">
+                    <li>
+                      <div class="export-button m-l-10" matTooltip="XLSX">
+                        <img
+                          src="assets/images/icons/xlsx.png"
+                          alt=""
+                          (click)="exportArray()"
+                        />
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <ngx-datatable
+                  #table
+                  class="material"
+                  [rows]="data"
+                  [columns]="columns"
+                  [sortType]="SortType.multi"
+                  [headerHeight]="50"
+                  [footerHeight]="50"
+                  [limit]="10"
+                  rowHeight="auto"
+                  [scrollbarH]="true"
+                >
+                  <ngx-datatable-column
+                    name="Actions"
+                    [sortable]="false"
+                    [width]="200"
+                  >
+                    <ng-template
+                      let-value="value"
+                      let-row="row"
+                      let-rowIndex="rowIndex"
+                      ngx-datatable-cell-template
+                    >
+                      <span>
+                        <button
+                          mat-icon-button
+                          (click)="openModalMatrix(row.id)"
+                          matTooltip="Editar"
+                          aria-label="Editar"
+                        >
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                        <button
+                          mat-icon-button
+                          color="primary"
+                          (click)="openModalMatrixDuplicate(row.id)"
+                          matTooltip="Duplicar"
+                          aria-label="Duplicar"
+                        >
+                          <i class="material-icons">file_copy</i>
+                        </button>
+                        <button
+                          mat-icon-button
+                          color="warn"
+                          (click)="eliminar(row.id)"
+                          matTooltip="Inactivar"
+                          aria-label="Inactivar"
+                        >
+                          <i class="material-icons">delete</i>
+                        </button>
+                      </span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column
+                    name="Punto Venta"
+                    prop="ocrdName"
+                    [width]="400"
+                  ></ngx-datatable-column>
+                  <ngx-datatable-column
+                    name="Supervisora"
+                    prop="supervisora"
+                    [width]="300"
+                  ></ngx-datatable-column>
+                  <ngx-datatable-column
+                    name="Promotor"
+                    prop="promotor"
+                    [width]="300"
+                  ></ngx-datatable-column>
+                  <ngx-datatable-column
+                    name="Vigencia"
+                    prop="vigencia"
+                    [width]="200"
+                  ></ngx-datatable-column>
+                  <ngx-datatable-column
+                    name="Tipo Asignacion"
+                    prop="tipoAsignacion"
+                  ></ngx-datatable-column>
+                </ngx-datatable>
+                <div *ngIf="isLoadingTabla" class="loading-indicator">
+                  <mat-spinner diameter="30"></mat-spinner>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

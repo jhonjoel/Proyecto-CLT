@@ -1,0 +1,92 @@
+<div class="auth-container">
+  <div class="row auth-main">
+    <div class="col-sm-6 px-0 d-none d-sm-block">
+      <div class="left-img" style="background-color: rgb(0, 0, 0)">
+        <img src="../../../assets/images/ytrack/ytrack2.png" />
+      </div>
+    </div>
+    <div class="col-sm-6 auth-form-section">
+      <div class="form-section">
+        <div class="auth-wrapper">
+          <h2 class="login-title">Inicio de sesión</h2>
+          <form
+            class="validate-form"
+            [formGroup]="authForm"
+            (ngSubmit)="onSubmit()"
+          >
+            <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Usuario</mat-label>
+                  <input matInput formControlName="username" />
+                  <mat-icon matSuffix class="face-icon">face</mat-icon>
+                  @if (authForm.get('username')?.hasError('required')) {
+                  <mat-error> Usuario es requerido </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Contraseña</mat-label>
+                  <input
+                    matInput
+                    [type]="hide ? 'password' : 'text'"
+                    formControlName="password"
+                  />
+                  <a
+                    class="show-pwd-icon"
+                    href="#"
+                    onClick="return false;"
+                    matSuffix
+                    (click)="hide = !hide"
+                    [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide"
+                  >
+                    <mat-icon matSuffix>{{
+                      hide ? "visibility_off" : "visibility"
+                    }}</mat-icon>
+                  </a>
+                  @if (authForm.get('password')?.hasError('required')) {
+                  <mat-error> Contraseña es requerida </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            </div>
+            <div
+              class="d-flex justify-content-between align-items-center mb-5"
+            ></div>
+            @if (error) {
+            <div class="alert alert-danger mt-3 mb-0">{{ error }}</div>
+            }
+            <div class="container-auth-form-btn">
+              <div style="text-align: center">
+                @if (!loading) {
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="auth-form-btn"
+                  [disabled]="!authForm.valid"
+                  type="submit"
+                >
+                  Ingresar</button
+                >} @if (loading) {
+                <button
+                  mat-raised-button
+                  color="warn"
+                  class="auth-form-btn"
+                  type="submit"
+                >
+                  Cargando...</button
+                >}
+              </div>
+            </div>
+          </form>
+          <h6 class="social-login-title"></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

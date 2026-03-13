@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.date-picker {
+  margin-bottom: 20px; /* Espacio entre el datepicker y el select */
+}
+
+.demo-table {
+  width: 100%;
+}
+
+/* Agrega esta clase para personalizar el color del botón a verde */
+.green-button {
+  background-color: green; /* Cambia el color de fondo */
+  color: white; /* Cambia el color del texto */
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-color: currentColor;
+}
+
+.demo-row-is-clicked {
+  font-weight: bold;
+}
+
+.ngx-datatable
+  .datatable-header
+  .datatable-header-cell
+  .datatable-header-cell-template-wrap {
+  text-align: center;
+}

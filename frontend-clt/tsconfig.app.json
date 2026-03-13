@@ -1,0 +1,32 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "files": [
+    "src/main.ts"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/test.ts",
+    "src/app/authentication",
+    "src/app/features/auth/auth.routes.ts",
+    "src/app/core/guards/rutas.guard.ts",
+    "src/app/components/**",
+    "src/app/modules/**",
+    "src/app/tables/**",
+    "src/app/core/models/**",
+    "src/app/core/service/**",
+    "src/app/core/services/administrativo/**",
+    "src/app/core/services/comercial/**",
+    "src/app/core/services/main/**",
+    "src/app/core/utils/**",
+    "src/app/shared/utilities/**",
+    "src/app/shared/components/file-upload/**"
+  ]
+}

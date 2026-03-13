@@ -1,0 +1,114 @@
+<section class="content oms-detalle">
+  @if (loading()) {
+    <div class="oms-detalle-loading">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Cargando detalle del pedido...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="oms-detalle-error">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ errorMessage() }}</p>
+      <a mat-raised-button color="primary" routerLink="/orders">Volver al listado</a>
+    </div>
+  } @else if (order()) {
+    <div class="oms-detalle-wrap" #printArea>
+      <div class="oms-detalle-header">
+        <app-breadcrumb
+          title="Detalle de Pedido - OMS"
+          [items]="['Órdenes']"
+          active_item="Detalle"
+        />
+        <div class="oms-detalle-title-row">
+          <h1 class="oms-detalle-codigo">#{{ order()!.codigo }}</h1>
+          <span [class]="'oms-badge oms-badge-' + order()!.estado">{{ order()!.estado }}</span>
+        </div>
+        <p class="oms-detalle-fecha">
+          <mat-icon>calendar_today</mat-icon>
+          Fecha de Creación: {{ order()!.fechaCreacion | date: 'd MMM, y' }}
+        </p>
+        <div class="oms-detalle-actions">
+          <a mat-stroked-button routerLink="/orders">
+            <mat-icon>arrow_back</mat-icon>
+            Volver al listado
+          </a>
+          <button mat-stroked-button (click)="openEditar()">
+            <mat-icon>edit</mat-icon>
+            Editar Pedido
+          </button>
+          <button mat-stroked-button (click)="imprimir()">
+            <mat-icon>print</mat-icon>
+            Imprimir Pedido
+          </button>
+          <a mat-stroked-button [routerLink]="['/orders', order()!.id, 'historial']">
+            <mat-icon>history</mat-icon>
+            Historial de comandos
+          </a>
+          @if (order()!.estado !== 'CANCELADO' && order()!.estado !== 'COMPLETADO') {
+            <button mat-stroked-button (click)="openCambiarEstado()">
+              <mat-icon>sync_alt</mat-icon>
+              Cambiar Estado
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="oms-detalle-section">
+        <h2 class="oms-section-title">
+          <mat-icon>shopping_cart</mat-icon>
+          Ítems del Pedido
+        </h2>
+        <div class="oms-items-table-wrap">
+          <table mat-table [dataSource]="order()!.items" class="oms-items-table">
+            <ng-container matColumnDef="descripcion">
+              <th mat-header-cell *matHeaderCellDef>Descripción</th>
+              <td mat-cell *matCellDef="let item">{{ item.descripcion }}</td>
+            </ng-container>
+            <ng-container matColumnDef="cantidad">
+              <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+              <td mat-cell *matCellDef="let item">{{ item.cantidad | number }}</td>
+            </ng-container>
+            <ng-container matColumnDef="precioUnitario">
+              <th mat-header-cell *matHeaderCellDef>Precio Unitario</th>
+              <td mat-cell *matCellDef="let item">₲ {{ item.precioUnitario | number: '1.2-2' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="subtotal">
+              <th mat-header-cell *matHeaderCellDef>Subtotal</th>
+              <td mat-cell *matCellDef="let item">₲ {{ getItemSubtotal(item) | number: '1.2-2' }}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="itemColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: itemColumns"></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="oms-detalle-grid">
+        <div class="oms-detalle-card">
+          <h2 class="oms-section-title">
+            <mat-icon>person</mat-icon>
+            Información del Cliente
+          </h2>
+          <div class="oms-cliente-info">
+            <p class="oms-cliente-nombre">{{ order()!.clienteNombre }}</p>
+          </div>
+        </div>
+
+        <div class="oms-detalle-card">
+          <h2 class="oms-section-title">
+            <mat-icon>receipt_long</mat-icon>
+            Resumen de Totales
+          </h2>
+          <div class="oms-resumen">
+            <div class="oms-resumen-row">
+              <span>Subtotal (ítems)</span>
+              <span>₲ {{ subtotalItems() | number: '1.2-2' }}</span>
+            </div>
+            <div class="oms-resumen-row oms-resumen-total">
+              <span>Total</span>
+              <span>₲ {{ order()!.total | number: '1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</section>

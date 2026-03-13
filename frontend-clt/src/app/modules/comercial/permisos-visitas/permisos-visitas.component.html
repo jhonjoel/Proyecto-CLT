@@ -1,0 +1,125 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+
+    <mat-form-field appearance="outline">
+      <mat-label>Filtro</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Ej. promotor/a"
+        #input
+      />
+    </mat-form-field>
+
+    <section class="example-container mat-elevation-z8" tabindex="0">
+      <mat-table
+        [dataSource]="dataSource"
+        class="mat-elevation-z8 mat-sort-header"
+      >
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>No.</th>
+          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+
+        <!-- Nombre Column -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+        </ng-container>
+
+        <!-- Apellido Column -->
+        <ng-container matColumnDef="apellido">
+          <th mat-header-cell *matHeaderCellDef>Apellido</th>
+          <td mat-cell *matCellDef="let element">{{ element.apellido }}</td>
+        </ng-container>
+
+        <!-- Usuario Column -->
+        <ng-container matColumnDef="usuario">
+          <th mat-header-cell *matHeaderCellDef>Usuario</th>
+          <td mat-cell *matCellDef="let element">{{ element.usuario }}</td>
+        </ng-container>
+
+        <!-- Área Column -->
+        <ng-container matColumnDef="area">
+          <th mat-header-cell *matHeaderCellDef>Área</th>
+          <td mat-cell *matCellDef="let element">{{ element.area }}</td>
+        </ng-container>
+
+        <!-- Created At Column -->
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef>Creado en</th>
+          <td mat-cell *matCellDef="let element">{{ element.createdAt }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Permiso inicio tarde</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="permitirAcceso(element.id)"
+            >
+              <mat-icon *ngIf="!procesando[element.id]">done</mat-icon>
+              <mat-spinner
+                diameter="24"
+                *ngIf="procesando[element.id]"
+              ></mat-spinner>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="permisosTarde">
+          <th mat-header-cell *matHeaderCellDef>Permiso fuera del punto</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="permitirSalidaFueraPunto(element.id)"
+            >
+              <mat-icon *ngIf="!procesandoFP[element.id]">done</mat-icon>
+              <mat-spinner
+                diameter="24"
+                *ngIf="procesandoFP[element.id]"
+              ></mat-spinner>
+            </button>
+          </td>
+        </ng-container>
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td *ngIf="consultandoDatos == false" class="mat-cell" colspan="6">
+            No se encontraron resultados "{{ input.value }}"
+          </td>
+
+          <td *ngIf="consultandoDatos" class="mat-cell" colspan="7">
+            <div *ngIf="consultandoDatos" class="loading-overlay">
+              <mat-spinner diameter="48"></mat-spinner>
+              <span class="loading-message">Consultando datos...</span>
+            </div>
+          </td>
+        </tr>
+      </mat-table>
+      <mat-paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 25]"
+      ></mat-paginator>
+    </section>
+  </div>
+</section>

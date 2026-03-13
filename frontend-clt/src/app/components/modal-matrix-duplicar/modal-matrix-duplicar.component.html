@@ -1,0 +1,69 @@
+<div class="container form-control">
+  <label>Punto de venta</label>
+  <app-select-ocrd
+    (OcrdSeleccionado)="idOcrdSeleccionado($event)"
+    [selectedOcrdId]="idOcrd"
+  ></app-select-ocrd>
+  <label>Promotor</label>
+
+  <app-select-usuario
+    #selectorPromotor
+    (usuarioSeleccionado)="idPromotorSeleccionado($event)"
+    [searchLabel]="'Selecciona promotor'"
+    [searchUser]="'Encuentra al promotor'"
+    [selectedUserId]="idPromotor"
+  ></app-select-usuario>
+  <label>Supervisor</label>
+  <app-select-usuario
+    #selectorSupervisor
+    (usuarioSeleccionado)="idSupervisorSeleccionado($event)"
+    [searchLabel]="'Selecciona supervisor'"
+    [searchUser]="'Encuentra al supervisor'"
+    [selectedUserId]="idSupervisor"
+  ></app-select-usuario>
+
+  <label>Tipo</label>
+  <app-tipo-asignacion-usu-pv
+    (tipoSeleccionado)="tipoSeleccionado($event)"
+    [selectedAsignacionId]="idtipoAsignacion"
+  >
+  </app-tipo-asignacion-usu-pv>
+
+  <mat-form-field>
+    <mat-label>Ingrese rango de fechas</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input
+        matStartDate
+        placeholder="Start date"
+        [(ngModel)]="fechaInicio"
+        name="start"
+      />
+      <input
+        matEndDate
+        placeholder="End date"
+        [(ngModel)]="fechaFin"
+        name="end"
+      />
+    </mat-date-range-input>
+
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
+  <div class="modal-footer align-right">
+    <button
+      *ngIf="!isLoading"
+      mat-raised-button
+      color="primary"
+      (click)="duplicar()"
+    >
+      <mat-icon>track_changes</mat-icon> Duplicar
+    </button>
+    <button mat-raised-button color="primary" *ngIf="isLoading">
+      Agregando...
+      <mat-icon
+        ><mat-spinner color="accent" diameter="19"> </mat-spinner
+      ></mat-icon>
+    </button>
+  </div>
+</div>

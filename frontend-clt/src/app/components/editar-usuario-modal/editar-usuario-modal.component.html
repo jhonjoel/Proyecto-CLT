@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>EDITAR USUARIO {{ data.nombreUsuario }}</h2>
+<mat-dialog-content class="mat-typography">
+  <app-select-horario
+    [idHorarioSeleccionado]="idHorarioAEnviar"
+    (idHorarioSeleccionadoEmitter)="handleHorarioSeleccionado($event)"
+  ></app-select-horario>
+
+  <mat-form-field hintLabel="Max 10 números" class="example-full-width">
+    <mat-label>Número de teléfono</mat-label>
+    <input
+      matInput
+      #input
+      maxlength="10"
+      [(ngModel)]="phoneNumber"
+      placeholder="09XXXXXXXX"
+    />
+    <mat-hint align="end">{{ input.value.length }}/10</mat-hint>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="modal-footer align-right">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button
+      *ngIf="!procesando"
+      mat-raised-button
+      color="primary"
+      (click)="editarUsuario()"
+    >
+      <mat-icon>track_changes</mat-icon> Modificar
+    </button>
+    <button mat-raised-button color="primary" *ngIf="procesando">
+      Modificando...
+      <mat-icon
+        ><mat-spinner color="accent" diameter="19"> </mat-spinner
+      ></mat-icon>
+    </button>
+  </div>
+</mat-dialog-actions>

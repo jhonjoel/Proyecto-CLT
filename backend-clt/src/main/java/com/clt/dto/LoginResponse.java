@@ -1,0 +1,23 @@
+package com.clt.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginResponse {
+
+    private String accessToken;
+    private String refreshToken;
+    private String tipoToken = "Bearer";
+    private String username;
+    private String nombreCompleto;
+    private List<String> permisos;
+    private long expiracionMs;
+}

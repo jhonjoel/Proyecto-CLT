@@ -1,0 +1,82 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Seleccionar fecha</mat-label>
+        <input
+          matInput
+          [matDatepicker]="datepicker"
+          (dateChange)="onDateChange($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="datepicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #datepicker></mat-datepicker>
+      </mat-form-field>
+
+      <app-select-usuario
+        (usuarioSeleccionado)="handleUsuarioSeleccionado($event)"
+      ></app-select-usuario>
+
+      <button
+        *ngIf="!isLoading"
+        mat-raised-button
+        color="primary"
+        (click)="rastrear()"
+      >
+        <mat-icon>track_changes</mat-icon> Rastrear
+      </button>
+      <button mat-raised-button color="primary" *ngIf="isLoading">
+        Buscando...
+        <mat-icon
+          ><mat-spinner color="accent" diameter="19"> </mat-spinner
+        ></mat-icon>
+      </button>
+    </div>
+
+    <!-- Contenido del segundo div -->
+    <google-map
+      class="google-maps-class"
+      [height]="null"
+      [width]="null"
+      [center]="center"
+      [zoom]="zoom"
+      *ngIf="!isLoading"
+    >
+      <!-- Agregar marcadores en el mapa -->
+      <map-marker
+        *ngFor="let markerPosition of markerPositions; let i = index"
+        [position]="markerPosition"
+        [options]="
+          labels[i].ultimoUbicacion === '1' ? markerOptionsFinal : markerOptions
+        "
+        [label]="{
+          color: labels[i].color,
+          fontWeight: labels[i].fontWeight,
+          fontSize: labels[i].fontSize,
+          text: labels[i].text
+        }"
+        [title]="labels[i].hora"
+        (mapClick)="abrirInfoWindow(i)"
+      >
+      </map-marker>
+      <map-polyline
+        [path]="markerPositions"
+        [options]="lineOptions"
+      ></map-polyline>
+    </google-map>
+  </div>
+</section>

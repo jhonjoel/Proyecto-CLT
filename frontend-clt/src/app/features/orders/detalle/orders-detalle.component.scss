@@ -1,0 +1,223 @@
+/** Estilos basados en Stitch: Detalle de Pedido con Impresión - OMS */
+.oms-detalle {
+  padding: 1.5rem;
+  max-width: 1200px;
+}
+
+.oms-detalle-loading,
+.oms-detalle-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  gap: 1rem;
+
+  p {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.oms-detalle-error mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #f44336;
+}
+
+.oms-detalle-wrap {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem 2rem;
+}
+
+.oms-detalle-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.oms-detalle-title-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.oms-detalle-codigo {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.oms-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.oms-badge-PENDIENTE { background-color: #ff9800; color: #fff; }
+.oms-badge-EN_PROCESO { background-color: #2196f3; color: #fff; }
+.oms-badge-COMPLETADO { background-color: #4caf50; color: #fff; }
+.oms-badge-CANCELADO { background-color: #f44336; color: #fff; }
+
+.oms-detalle-fecha {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 0.9rem;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.oms-detalle-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+
+  a, button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.oms-detalle-section {
+  margin-bottom: 2rem;
+}
+
+.oms-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    color: #556cec;
+  }
+}
+
+.oms-items-table-wrap {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.oms-items-table {
+  width: 100%;
+
+  .mat-mdc-header-cell {
+    font-weight: 600;
+    background-color: #556cec;
+    color: #fff;
+    border: none;
+    padding: 12px 16px;
+  }
+
+  .mat-mdc-cell {
+    padding: 12px 16px;
+  }
+
+  .mat-mdc-row:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
+
+.oms-detalle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.oms-detalle-card {
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.oms-cliente-info {
+  .oms-cliente-nombre {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.oms-resumen {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .oms-resumen-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.75);
+
+    &.oms-resumen-total {
+      margin-top: 0.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #1a1a1a;
+    }
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .oms-detalle-wrap,
+  .oms-detalle-wrap * {
+    visibility: visible;
+  }
+
+  .oms-detalle-wrap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .oms-detalle-actions {
+    display: none !important;
+  }
+
+  .oms-detalle-loading,
+  .oms-detalle-error {
+    display: none !important;
+  }
+}

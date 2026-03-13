@@ -1,0 +1,130 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Ingrese rango de fechas</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input
+            matStartDate
+            placeholder="Start date"
+            [(ngModel)]="startDate"
+          />
+          <input matEndDate placeholder="End date" [(ngModel)]="endDate" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <button
+        *ngIf="!isLoading"
+        mat-raised-button
+        color="primary"
+        (click)="obtenerDatos()"
+      >
+        <mat-icon>track_changes</mat-icon> Buscar
+      </button>
+
+      <button mat-raised-button color="primary" *ngIf="isLoading">
+        Buscando...
+        <mat-icon
+          ><mat-spinner color="accent" diameter="19"> </mat-spinner
+        ></mat-icon>
+      </button>
+    </div>
+    <mat-form-field class="render">
+      <mat-label>Filtro</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Ej. Promotor/a"
+        #input
+      />
+    </mat-form-field>
+
+    <button mat-raised-button class="green-button" (click)="exportArray()">
+      <mat-icon>insert_drive_file</mat-icon> Exportar a Excel
+    </button>
+    <section class="example-container mat-elevation-z8" tabindex="0">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!-- Columnas de la tabla -->
+        <ng-container matColumnDef="Usuario">
+          <th mat-header-cell *matHeaderCellDef>Usuario</th>
+          <td mat-cell *matCellDef="let marcacion">
+            {{ marcacion.usuario }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="diaSemana">
+          <th mat-header-cell *matHeaderCellDef>Dia</th>
+          <td mat-cell *matCellDef="let marcacion">
+            {{ marcacion.diaSemana }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let marcacion">{{ marcacion.fecha }}</td>
+        </ng-container>
+        <ng-container matColumnDef="primerRegistroManana">
+          <th mat-header-cell *matHeaderCellDef>Entrada Mañana</th>
+          <td mat-cell *matCellDef="let marcacion">
+            {{ marcacion.primerRegistroManana }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="ultimoRegistroManana">
+          <th mat-header-cell *matHeaderCellDef>Salida Mañana</th>
+          <td mat-cell *matCellDef="let marcacion">
+            {{ marcacion.ultimoRegistroManana }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="primerRegistroTarde">
+          <th mat-header-cell *matHeaderCellDef>Entrada Tarde</th>
+          <td mat-cell *matCellDef="let marcacion">
+            {{ marcacion.primerRegistroTarde }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="ultimoRegistroTarde">
+          <th mat-header-cell *matHeaderCellDef>Salida Tarde</th>
+          <td mat-cell *matCellDef="let marcacion">
+            {{ marcacion.ultimoRegistroTarde }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="tiempoDespuesDeSalida">
+          <th mat-header-cell *matHeaderCellDef>
+            Tiempo despues de Salida (Minutos)
+          </th>
+          <td mat-cell *matCellDef="let marcacion">
+            {{ marcacion.tiempoDespuesDeSalida }}
+            <mat-icon
+              *ngIf="marcacion.tiempoDespuesDeSalida < 0"
+              style="color: rgb(230, 0, 0)"
+              class="battery-icon"
+              >add_alert</mat-icon
+            >
+          </td>
+        </ng-container>
+
+        <!-- Encabezados de la tabla -->
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <!-- Fila de datos -->
+        <tr mat-row *matRowDef="let marcacion; columns: displayedColumns"></tr>
+      </table>
+    </section>
+    <p *ngIf="noData">No se encontraron datos de visitas.</p>
+  </div>
+</section>

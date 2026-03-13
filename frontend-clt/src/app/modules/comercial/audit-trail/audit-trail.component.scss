@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.date-picker {
+  margin-bottom: 20px; /* Espacio entre el datepicker y el select */
+}
+
+/* En tu archivo de estilos CSS */
+/* Estilo CSS personalizado para el MatSnackBar */
+.my-snack-bar {
+  position: fixed;
+  top: 0;
+  z-index: 9999; /* Ajusta el valor de z-index según tus necesidades */
+}
+
+.google-maps-class {
+  ::ng-deep .map-container {
+    height: 500px;
+    width: 100%;
+  }
+}

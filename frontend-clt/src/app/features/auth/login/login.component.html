@@ -1,0 +1,69 @@
+<!-- Diseño Stitch: Login - YTrack OMS (sin modificar parte de imagen) -->
+<div class="auth-container">
+  <div class="row auth-main">
+    <div class="col-sm-6 px-0 d-none d-sm-block">
+      <div class="left-img" style="background-color: rgb(0, 0, 0)">
+        <img src="assets/images/CLT/clt_login.png" alt="YTrack OMS" />
+      </div>
+    </div>
+    <div class="col-sm-6 auth-form-section">
+      <div class="form-section">
+        <div class="auth-wrapper oms-auth-wrapper">
+          <h2 class="oms-login-title">Iniciar Sesión</h2>
+          <p class="oms-login-subtitle">Bienvenido de nuevo a OMS</p>
+          <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+            <mat-form-field class="oms-full-width" appearance="outline">
+              <mat-label>Usuario</mat-label>
+              <input matInput formControlName="username" placeholder="Usuario" />
+              <mat-icon matPrefix class="oms-field-icon">person</mat-icon>
+              @if (authForm.get('username')?.hasError('required') && authForm.get('username')?.touched) {
+                <mat-error>El usuario es requerido</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="oms-full-width" appearance="outline">
+              <mat-label>Contraseña</mat-label>
+              <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" placeholder="Contraseña" />
+              <mat-icon matPrefix class="oms-field-icon">lock</mat-icon>
+              <button type="button" mat-icon-button matSuffix (click)="hide = !hide" tabindex="-1">
+                <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (authForm.get('password')?.hasError('required') && authForm.get('password')?.touched) {
+                <mat-error>La contraseña debe tener al menos 6 caracteres</mat-error>
+              }
+            </mat-form-field>
+            @if (showTurnstile) {
+              <div class="oms-turnstile-wrap">
+                <ngx-turnstile [siteKey]="turnstileSiteKey" formControlName="turnstileToken" theme="light" size="normal"></ngx-turnstile>
+              </div>
+              @if (authForm.get('turnstileToken')?.invalid && authForm.get('turnstileToken')?.touched) {
+                <div class="oms-auth-error">Debes completar la verificación de seguridad.</div>
+              }
+            }
+            @if (error) {
+              <div class="oms-auth-error">{{ error }}</div>
+            }
+            <button mat-raised-button color="primary" class="oms-auth-btn" [disabled]="!authForm.valid || loading" type="submit">
+              @if (loading) { Cargando... } @else { Iniciar Sesión }
+            </button>
+            <div class="oms-auth-options">
+              <label class="oms-checkbox-wrap">
+                <input type="checkbox" [(ngModel)]="rememberMe" [ngModelOptions]="{standalone: true}" />
+                <span>Recordarme</span>
+              </label>
+              <a routerLink="/auth/forgot-password" class="oms-forgot-link">¿Olvidaste tu contraseña?</a>
+            </div>
+            <div class="oms-auth-divider">
+              <span>O</span>
+            </div>
+            <p class="oms-auth-register">
+              ¿No tienes cuenta? <a routerLink="/auth/register">Regístrate</a>
+            </p>
+          </form>
+        </div>
+        <footer class="oms-auth-footer">
+          © 2026 CLT S.A. Todos los derechos reservados. Términos de servicio • Privacidad
+        </footer>
+      </div>
+    </div>
+  </div>
+</div>

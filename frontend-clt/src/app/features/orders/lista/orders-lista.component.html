@@ -1,0 +1,92 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb
+        title="Órdenes de compra"
+        [items]="['Órdenes']"
+        active_item="Lista"
+      />
+      <a mat-raised-button color="primary" routerLink="/orders/nueva">Nueva orden</a>
+    </div>
+
+    <div class="filter-row">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Estado</mat-label>
+        <mat-select [(value)]="filtroEstado" (selectionChange)="buscar()">
+          <mat-option [value]="null">Todos</mat-option>
+          @for (e of estados; track e) {
+            <mat-option [value]="e">{{ e }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Desde</mat-label>
+        <input matInput [matDatepicker]="pickerDesde" [(ngModel)]="filtroFechaDesde" (dateChange)="buscar()" />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerDesde" />
+        <mat-datepicker #pickerDesde />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Hasta</mat-label>
+        <input matInput [matDatepicker]="pickerHasta" [(ngModel)]="filtroFechaHasta" (dateChange)="buscar()" />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerHasta" />
+        <mat-datepicker #pickerHasta />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Cliente</mat-label>
+        <input matInput [(ngModel)]="filtroCliente" (keyup.enter)="buscar()" />
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="buscar()">Buscar</button>
+    </div>
+
+    <div class="example-container">
+      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="ordenar($event)">
+        <ng-container matColumnDef="codigo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Código</th>
+          <td mat-cell *matCellDef="let row">
+            <a [routerLink]="['/orders', row.id]">{{ row.codigo }}</a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="clienteNombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
+          <td mat-cell *matCellDef="let row">{{ row.clienteNombre }}</td>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let row">
+            <span [class]="'badge badge-' + badgeClass(row.estado)">{{ row.estado }}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+          <td mat-cell *matCellDef="let row">{{ row.total | number:'1.2-2' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fechaCreacion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha creación</th>
+          <td mat-cell *matCellDef="let row">{{ row.fechaCreacion | date:'short' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let row">
+            <a mat-button [routerLink]="['/orders', row.id]">Ver</a>
+            @if (row.estado !== 'CANCELADO' && row.estado !== 'COMPLETADO') {
+              <button mat-button color="warn" (click)="confirmarCancelar(row)">Cancelar</button>
+            }
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">Sin resultados</td>
+        </tr>
+      </table>
+      <mat-paginator
+        [length]="totalElements"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="cambiarPagina($event)"
+        showFirstLastButtons
+      />
+    </div>
+  </div>
+</section>

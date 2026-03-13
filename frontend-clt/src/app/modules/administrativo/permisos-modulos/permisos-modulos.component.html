@@ -1,0 +1,85 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+
+    <div class="container example-form">
+      <app-select-rol
+        (rolSeleccionado)="handleRolSeleccionado($event)"
+      ></app-select-rol>
+
+      <div *ngIf="isLoadingAcordion" class="loading-overlay">
+        <mat-spinner diameter="48"></mat-spinner>
+        <span class="loading-message">Obteniendo permisos...</span>
+      </div>
+
+      <div *ngIf="!isLoadingAcordion">
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let modulo of modulos" [expanded]="">
+            <mat-expansion-panel-header
+              class="mat-expansion-panel-header-no-hover"
+            >
+              <mat-icon>{{ modulo.icono }}</mat-icon>
+              <span>{{ modulo.descripcion }}</span>
+            </mat-expansion-panel-header>
+
+            <table>
+              <tr *ngFor="let formulario of modulo.yemsys_formularios">
+                <td>
+                  <mat-checkbox
+                    [value]="formulario.id"
+                    [checked]="idsASeleccionar.includes(formulario.id)"
+                    [(ngModel)]="formulario.idChecked"
+                    (change)="
+                      actualizarVariable(formulario.id, formulario.idChecked)
+                    "
+                  >
+                    <a>{{ formulario.descripcion }}</a></mat-checkbox
+                  >
+                </td>
+
+                <td>
+                  <mat-icon
+                    *ngIf="formulario.app === 'ANDROID'"
+                    class="mat-icon-green"
+                    >android</mat-icon
+                  >
+                  <mat-icon *ngIf="formulario.app !== 'ANDROID'"
+                    >laptop_chromebook</mat-icon
+                  >
+                </td>
+              </tr>
+            </table>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+
+      <br />
+      <div class="modal-footer align-right">
+        <button
+          *ngIf="!isLoading"
+          mat-raised-button
+          color="primary"
+          (click)="registrarPermisos()"
+        >
+          <mat-icon>track_changes</mat-icon> Registrar permisos
+        </button>
+        <button mat-raised-button color="primary" *ngIf="isLoading">
+          Registrando...
+          <mat-icon
+            ><mat-spinner color="accent" diameter="19"> </mat-spinner
+          ></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

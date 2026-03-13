@@ -1,0 +1,440 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Seleccionar fecha</mat-label>
+        <input
+          matInput
+          [matDatepicker]="datepicker"
+          (dateChange)="onDateChange($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="datepicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #datepicker></mat-datepicker>
+      </mat-form-field>
+
+      <div class="row">
+        <div
+          class="col-lg-3 col-md-3 col-sm-12"
+          (click)="toggleInfo('IniciadosManana')"
+        >
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary float-start bg-blue">
+                <i
+                  *ngIf="consultandoDatosCab == false"
+                  class="fas fa-users"
+                ></i>
+                <mat-icon *ngIf="consultandoDatosCab"
+                  ><mat-spinner color="accent" diameter="25"> </mat-spinner
+                ></mat-icon>
+              </div>
+              <div class="float-end m-4">
+                <div>
+                  <h6 class="float-end">Turno mañana</h6>
+                </div>
+                <div class="card-body float-end">
+                  <h3 *ngIf="!consultandoDatosCab">
+                    {{ usuarioIniciadosManana }}
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-content m-3">
+              <div class="progress skill-progress m-b-20 w-100">
+                <div
+                  class="progress-bar l-bg-blue width-per-100"
+                  role="progressbar"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
+            <div [hidden]="!isInfoVisibleIniciadosManana">
+              <div class="card">
+                <a (click)="exportArray()" class="form-control bg-gray">
+                  Excel <i class="fas fa-file-excel"></i>
+                </a>
+                <div class="card-body example-container">
+                  <mat-card
+                    mat-raised-button
+                    color="primary"
+                    *ngIf="consultandoDatos"
+                  >
+                    Consultando...
+                    <mat-icon
+                      ><mat-spinner color="accent" diameter="19"> </mat-spinner
+                    ></mat-icon>
+                  </mat-card>
+
+                  <p
+                    class="card-text"
+                    *ngFor="let usuario of listaUsuarios; let i = index"
+                  >
+                    <a *ngIf="!consultandoDatos">
+                      {{ i + 1 }}. {{ usuario.usuario }}</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-lg-3 col-md-3 col-sm-12"
+          (click)="toggleInfo('TardiaManana')"
+        >
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary float-start bg-yellow">
+                <i
+                  *ngIf="consultandoDatosCab == false"
+                  class="fas fa-users"
+                ></i>
+                <mat-icon *ngIf="consultandoDatosCab"
+                  ><mat-spinner color="accent" diameter="25"> </mat-spinner
+                ></mat-icon>
+              </div>
+              <div class="float-end m-4">
+                <div>
+                  <h6 class="float-end">Tardía t. mañana</h6>
+                </div>
+                <div class="card-body float-end">
+                  <h3 *ngIf="!consultandoDatosCab">
+                    {{ llegadasTardiaManana }}
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-content m-3">
+              <div class="progress skill-progress m-b-20 w-100">
+                <div
+                  class="progress-bar yellow width-per-100"
+                  role="progressbar"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
+            <div [hidden]="!isInfoVisibleTardiaManana">
+              <div class="card">
+                <a
+                  (click)="exportArrayLlegadaTardia()"
+                  class="form-control bg-gray"
+                >
+                  Excel <i class="fas fa-file-excel"></i>
+                </a>
+                <div class="card-body example-container">
+                  <mat-card
+                    mat-raised-button
+                    color="primary"
+                    *ngIf="consultandoDatos"
+                  >
+                    Consultando...
+                    <mat-icon
+                      ><mat-spinner color="accent" diameter="19"> </mat-spinner
+                    ></mat-icon>
+                  </mat-card>
+
+                  <p
+                    class="card-text"
+                    *ngFor="let usuario of listaUsuarios; let i = index"
+                  >
+                    <a *ngIf="!consultandoDatos">
+                      {{ i + 1 }}. {{ usuario.usuario }}</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-lg-3 col-md-3 col-sm-12"
+          (click)="toggleInfo('IniciadosTarde')"
+        >
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary float-start bg-green">
+                <i
+                  *ngIf="consultandoDatosCab == false"
+                  class="fas fa-users"
+                ></i>
+                <mat-icon *ngIf="consultandoDatosCab"
+                  ><mat-spinner color="accent" diameter="25"> </mat-spinner
+                ></mat-icon>
+              </div>
+              <div class="float-end m-4">
+                <div>
+                  <h6 class="float-end">Turno tarde</h6>
+                </div>
+                <div class="card-body float-end">
+                  <h3 *ngIf="!consultandoDatosCab">
+                    {{ usuarioIniciadosTarde }}
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-content m-3">
+              <div class="progress skill-progress m-b-20 w-100">
+                <div
+                  class="progress-bar l-bg-green width-per-100"
+                  role="progressbar"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
+            <div [hidden]="!isInfoVisibleIniciadosTarde">
+              <div class="card">
+                <a (click)="exportArray()" class="form-control bg-gray">
+                  Excel <i class="fas fa-file-excel"></i>
+                </a>
+                <div class="card-body example-container">
+                  <mat-card
+                    mat-raised-button
+                    color="primary"
+                    *ngIf="consultandoDatos"
+                  >
+                    Consultando...
+                    <mat-icon
+                      ><mat-spinner color="accent" diameter="19"> </mat-spinner
+                    ></mat-icon>
+                  </mat-card>
+
+                  <p
+                    class="card-text"
+                    *ngFor="let usuario of listaUsuarios; let i = index"
+                  >
+                    <a *ngIf="!consultandoDatos">
+                      {{ i + 1 }}. {{ usuario.usuario }}</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-lg-3 col-md-3 col-sm-12"
+          (click)="toggleInfo('TardiaTarde')"
+        >
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary float-start bg-red">
+                <i
+                  *ngIf="consultandoDatosCab == false"
+                  class="fas fa-users"
+                ></i>
+                <mat-icon *ngIf="consultandoDatosCab"
+                  ><mat-spinner color="accent" diameter="25"> </mat-spinner
+                ></mat-icon>
+              </div>
+              <div class="float-end m-4">
+                <div>
+                  <h6 class="float-end">Tardía t. tarde</h6>
+                </div>
+                <div class="card-body float-end">
+                  <h3 *ngIf="!consultandoDatosCab">
+                    {{ llegadasTardiaTarde }}
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-content m-3">
+              <div class="progress skill-progress m-b-20 w-100">
+                <div
+                  class="progress-bar l-bg-red width-per-100"
+                  role="progressbar"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
+            <div [hidden]="!isInfoVisibleTardiaTarde">
+              <div class="card">
+                <a
+                  (click)="exportArrayLlegadaTardia()"
+                  class="form-control bg-gray"
+                >
+                  Excel <i class="fas fa-file-excel"></i>
+                </a>
+                <div class="card-body example-container">
+                  <mat-card
+                    mat-raised-button
+                    color="primary"
+                    *ngIf="consultandoDatos"
+                  >
+                    Consultando...
+                    <mat-icon
+                      ><mat-spinner color="accent" diameter="19"> </mat-spinner
+                    ></mat-icon>
+                  </mat-card>
+
+                  <p
+                    class="card-text"
+                    *ngFor="let usuario of listaUsuarios; let i = index"
+                  >
+                    <a *ngIf="!consultandoDatos">
+                      {{ i + 1 }}. {{ usuario.usuario }}</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-lg-3 col-md-3 col-sm-12"
+          (click)="toggleInfo('FueraPunto')"
+        >
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary float-start bg-red">
+                <i
+                  *ngIf="consultandoDatosCab == false"
+                  class="fas fa-users"
+                ></i>
+                <mat-icon *ngIf="consultandoDatosCab"
+                  ><mat-spinner color="accent" diameter="25"> </mat-spinner
+                ></mat-icon>
+              </div>
+              <div class="float-end m-4">
+                <div>
+                  <h6 class="float-end">Fuera de punto</h6>
+                </div>
+                <div class="card-body float-end">
+                  <h3 *ngIf="!consultandoDatosCab">{{ salidaFueraPunto }}</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-content m-3">
+              <div class="progress skill-progress m-b-20 w-100">
+                <div
+                  class="progress-bar l-bg-red width-per-100"
+                  role="progressbar"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
+            <div [hidden]="!isInfoVisibleFueraPunto">
+              <div class="card">
+                <a (click)="exportArray()" class="form-control bg-gray">
+                  Excel <i class="fas fa-file-excel"></i>
+                </a>
+                <div class="card-body example-container">
+                  <mat-card
+                    mat-raised-button
+                    color="primary"
+                    *ngIf="consultandoDatos"
+                  >
+                    Consultando...
+                    <mat-icon
+                      ><mat-spinner color="accent" diameter="19"> </mat-spinner
+                    ></mat-icon>
+                  </mat-card>
+
+                  <p
+                    class="card-text"
+                    *ngFor="let usuario of listaUsuarios; let i = index"
+                  >
+                    <a *ngIf="!consultandoDatos">
+                      {{ i + 1 }}. {{ usuario.usuario }}</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-lg-3 col-md-3 col-sm-12"
+          (click)="toggleInfo('Ausencias')"
+        >
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary float-start bg-black">
+                <i
+                  *ngIf="consultandoDatosCab == false"
+                  class="fas fa-users"
+                ></i>
+                <mat-icon *ngIf="consultandoDatosCab"
+                  ><mat-spinner color="accent" diameter="25"> </mat-spinner
+                ></mat-icon>
+              </div>
+              <div class="float-end m-4">
+                <div>
+                  <h6 class="float-end">Ausencias</h6>
+                </div>
+                <div class="card-body float-end">
+                  <h3 *ngIf="!consultandoDatosCab">{{ ausencias }}</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-content m-3">
+              <div class="progress skill-progress m-b-20 w-100">
+                <div
+                  class="progress-bar black width-per-100"
+                  role="progressbar"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
+            <div [hidden]="!isInfoVisibleAusencias">
+              <div class="card">
+                <a (click)="exportArray()" class="form-control bg-gray">
+                  Excel <i class="fas fa-file-excel"></i>
+                </a>
+                <div class="card-body example-container">
+                  <mat-card
+                    mat-raised-button
+                    color="primary"
+                    *ngIf="consultandoDatos"
+                  >
+                    Consultando...
+                    <mat-icon
+                      ><mat-spinner color="accent" diameter="19"> </mat-spinner
+                    ></mat-icon>
+                  </mat-card>
+
+                  <p *ngFor="let usuario of listaUsuarios; let i = index">
+                    <a *ngIf="!consultandoDatos">
+                      {{ i + 1 }}. {{ usuario.usuario }}</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

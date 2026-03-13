@@ -1,0 +1,18 @@
+package com.clt.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CltPermisoSistemaDto {
+
+    private Long id;
+    private String etiqueta;
+    private String descripcion;
+    private Integer ordenVisual;
+}

@@ -1,0 +1,20 @@
+<mat-form-field class="example-full-width">
+  <mat-select
+    [formControl]="rolesCtrl"
+    placeholder="Roles"
+    #singleSelect
+    (selectionChange)="onRolSelected($event.value)"
+  >
+    <ngx-mat-select-search
+      [formControl]="rolesFilterCtrl"
+      noEntriesFoundLabel="'No se encontraron resultados'"
+      placeholderLabel="Encuentra el rol"
+    ></ngx-mat-select-search>
+    <mat-option *ngIf="showLoading" class="loading-option" disabled>
+      <mat-spinner diameter="16"></mat-spinner> Cargando roles...
+    </mat-option>
+    <mat-option *ngFor="let roles of filteredRoles | async" [value]="roles">
+      {{ roles.descripcion }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

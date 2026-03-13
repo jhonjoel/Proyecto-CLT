@@ -1,0 +1,93 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+
+    <!-- Contenido del segundo div -->
+    <google-map
+      class="google-maps-class"
+      [height]="null"
+      [width]="null"
+      [center]="center"
+      [zoom]="zoom"
+      *ngIf="!isLoading"
+    >
+      <!-- Agregar marcadores en el mapa -->
+      <map-marker
+        *ngFor="let markerPosition of markerPositions; let i = index"
+        [position]="markerPosition"
+        [options]="
+          labels[i].estado === false ? markerOptionsFinal : markerOptions
+        "
+        [label]="{
+          color: labels[i].color,
+          fontWeight: labels[i].fontWeight,
+          fontSize: labels[i].fontSize,
+          text: labels[i].text
+        }"
+        [title]="labels[i].hora + ': ' + labels[i].userName"
+        (mapClick)="abrirInfoWindow(i)"
+      >
+      </map-marker>
+    </google-map>
+    <mat-form-field class="render">
+      <mat-label>Filtro</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Ej. Promotor/a"
+        #input
+      />
+    </mat-form-field>
+    <section class="example-container mat-elevation-z8" tabindex="0">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="mat-elevation-z8"
+        matSort
+      >
+        <!-- Columnas de la tabla -->
+        <ng-container matColumnDef="Id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+          <td mat-cell *matCellDef="let listaUsuarios">
+            {{ listaUsuarios.id }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Usuario">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
+          <td mat-cell *matCellDef="let listaUsuarios">
+            {{ listaUsuarios.username }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="UltimaConexion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Ultima Conexion
+          </th>
+          <td mat-cell *matCellDef="let listaUsuarios">
+            {{ listaUsuarios.ultimaActualizacion }}
+          </td>
+        </ng-container>
+
+        <!-- Encabezados de la tabla -->
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <!-- Fila de datos -->
+        <tr
+          mat-row
+          *matRowDef="let listaUsuarios; columns: displayedColumns"
+        ></tr>
+      </table>
+    </section>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+    <div class="container form-control" style="height: 500px">
+      <app-select-ocrd
+        (OcrdSeleccionado)="Seleccionado($event)"
+      ></app-select-ocrd>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Ingrese latitud y longitud</mat-label>
+        <input
+          matInput
+          placeholder="Ingrese latitud y longitud"
+          name="latitudLongitud"
+          [(ngModel)]="latitudLongitud"
+        />
+      </mat-form-field>
+
+      <div class="modal-footer align-right">
+        <button
+          *ngIf="!isLoading"
+          mat-raised-button
+          color="primary"
+          (click)="registrar()"
+        >
+          <mat-icon>track_changes</mat-icon> Registrar ubicacion
+        </button>
+        <button mat-raised-button color="primary" *ngIf="isLoading">
+          Registrando...
+          <mat-icon
+            ><mat-spinner color="accent" diameter="19"> </mat-spinner
+          ></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,33 @@
+/* styles.scss */
+.mat-icon-green {
+  color: rgb(9, 177, 9);
+}
+/* styles.scss */
+.mat-expansion-panel-header-no-hover {
+  background-color: rgb(250, 255, 203);
+  color: rgb(0, 0, 0); /* Cambia el color del texto si es necesario */
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.loading-overlay {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.loading-message {
+  margin-top: 16px;
+  font-weight: bold;
+}

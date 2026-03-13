@@ -1,0 +1,91 @@
+<section class="content">
+  @if (loading()) {
+    <div class="oms-historial-loading">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Cargando historial de comandos...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="oms-historial-error">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ errorMessage() }}</p>
+      <a mat-raised-button color="primary" routerLink="/orders">Volver a Pedidos</a>
+    </div>
+  } @else {
+    <div class="content-block">
+      <div class="block-header">
+        <app-breadcrumb
+          title="Historial de Comandos - OMS"
+          [items]="order() ? ['Órdenes', '#' + order()!.codigo] : ['Órdenes']"
+          active_item="Historial"
+        />
+        <a mat-stroked-button routerLink="/orders">
+          <mat-icon>arrow_back</mat-icon>
+          Volver a Pedidos
+        </a>
+      </div>
+
+      @if (order()) {
+        <p class="oms-historial-subtitle">
+          Pedido <strong>#{{ order()!.codigo }}</strong> — {{ order()!.clienteNombre }}
+        </p>
+      }
+
+      <div class="example-container">
+        <table mat-table [dataSource]="dataSource" class="oms-historial-table">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let row">#{{ row.id }}</td>
+          </ng-container>
+          <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef>Fecha</th>
+            <td mat-cell *matCellDef="let row">{{ formatFecha(row.executedAt) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="usuario">
+            <th mat-header-cell *matHeaderCellDef>Usuario</th>
+            <td mat-cell *matCellDef="let row">{{ usuarioLabel(row) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="accion">
+            <th mat-header-cell *matHeaderCellDef>Acción</th>
+            <td mat-cell *matCellDef="let row">
+              <code class="cmd-type">{{ row.commandType }}</code>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef>Estado</th>
+            <td mat-cell *matCellDef="let row">
+              <span [class]="'badge badge-' + badgeClass(row.status)">{{ row.status }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="detalles">
+            <th mat-header-cell *matHeaderCellDef>Detalles</th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-button color="primary" (click)="verJson(row)">
+                <mat-icon>code</mat-icon>
+                Ver JSON
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+              No hay registros en el historial
+            </td>
+          </tr>
+        </table>
+
+        <div class="oms-historial-pagination">
+          <span class="pagination-info">{{ paginationLabel() }}</span>
+          <mat-paginator
+            [length]="totalElements()"
+            [pageSize]="pageSize()"
+            [pageIndex]="pageIndex()"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="cambiarPagina($event)"
+            showFirstLastButtons
+          />
+        </div>
+      </div>
+    </div>
+  }
+</section>

@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.date-picker {
+  margin-bottom: 20px; /* Espacio entre el datepicker y el select */
+}
+.example-container {
+  height: 400px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.render {
+  width: 100%;
+}
+
+td,
+th {
+  width: 25%;
+}

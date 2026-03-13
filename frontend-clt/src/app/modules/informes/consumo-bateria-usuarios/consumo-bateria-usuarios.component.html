@@ -1,0 +1,567 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Ingrese rango de fechas</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input
+            matStartDate
+            placeholder="Start date"
+            [(ngModel)]="fechaCalendario"
+          />
+          <input
+            matEndDate
+            placeholder="End date"
+            [(ngModel)]="fechaCalendario2"
+          />
+        </mat-date-range-input>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <button
+        *ngIf="!isLoading"
+        mat-raised-button
+        color="primary"
+        (click)="fetchListado()"
+      >
+        <mat-icon>track_changes</mat-icon> Buscar
+      </button>
+
+      <button mat-raised-button color="primary" *ngIf="isLoading">
+        Buscando...
+        <mat-icon
+          ><mat-spinner color="accent" diameter="19"> </mat-spinner
+        ></mat-icon>
+      </button>
+    </div>
+    <mat-form-field class="render">
+      <mat-label>Filtro</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Ej. Promotor/a"
+        #input
+      />
+    </mat-form-field>
+
+    <button mat-raised-button class="green-button" (click)="exportArray()">
+      <mat-icon>insert_drive_file</mat-icon> Exportar a Excel
+    </button>
+    <section class="example-container mat-elevation-z8" tabindex="0">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="mat-elevation-z8"
+        matSort
+      >
+        <!-- Columnas de la tabla -->
+        <ng-container matColumnDef="Usuario">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
+          <td mat-cell *matCellDef="let consumo">{{ consumo.Usuario }}</td>
+        </ng-container>
+        <ng-container matColumnDef="NombreDia">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Dia</th>
+          <td mat-cell *matCellDef="let consumo">{{ consumo.NombreDia }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+          <td mat-cell *matCellDef="let consumo">{{ consumo.fecha }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Rol">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
+          <td mat-cell *matCellDef="let consumo">{{ consumo.Rol }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Hora6">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>06:00</th>
+
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora6 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora6 >= 20 && consumo.Hora6 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora6 > 1 && consumo.Hora6 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora6 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora6 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora7">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>07:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora7 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora7 >= 20 && consumo.Hora7 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora7 > 1 && consumo.Hora7 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora7 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora7 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora8">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>08:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora8 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora8 >= 20 && consumo.Hora8 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora8 > 1 && consumo.Hora8 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora8 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora8 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora9">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>09:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora9 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora9 >= 20 && consumo.Hora9 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora9 > 1 && consumo.Hora9 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora9 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora9 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora10">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>10:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora10 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora10 >= 20 && consumo.Hora10 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora10 > 1 && consumo.Hora10 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora10 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora10 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora11">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>11:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora11 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora11 >= 20 && consumo.Hora11 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora11 > 1 && consumo.Hora11 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora11 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora11 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora12">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>12:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora12 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora12 >= 20 && consumo.Hora12 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora12 > 1 && consumo.Hora12 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora12 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora12 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora13">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>13:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora13 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora13 >= 20 && consumo.Hora13 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora13 > 1 && consumo.Hora13 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora13 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora13 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora14">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>14:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora14 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora14 >= 20 && consumo.Hora14 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora14 > 1 && consumo.Hora14 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora14 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora14 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora15">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>15:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora15 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora15 >= 20 && consumo.Hora15 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora15 > 1 && consumo.Hora15 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora15 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora15 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora16">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>16:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora16 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora16 >= 20 && consumo.Hora16 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora16 > 1 && consumo.Hora16 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora16 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora16 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora17">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>17:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora17 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora17 >= 20 && consumo.Hora17 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora17 > 1 && consumo.Hora17 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora17 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora17 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora18">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>18:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora18 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora18 >= 20 && consumo.Hora18 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora18 > 1 && consumo.Hora18 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora18 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora18 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hora19">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>19:00</th>
+          <td mat-cell *matCellDef="let consumo">
+            <ng-container>
+              <mat-icon
+                *ngIf="consumo.Hora19 > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora19 >= 20 && consumo.Hora19 <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="consumo.Hora19 > 1 && consumo.Hora19 <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="consumo.Hora19 === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ consumo.Hora19 }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Encabezados de la tabla -->
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+
+        <!-- Fila de datos -->
+        <tr mat-row *matRowDef="let visita; columns: displayedColumns"></tr>
+      </table>
+    </section>
+    <!-- Mensaje cuando no hay datos -->
+    <p *ngIf="noData">No se encontraron datos de visitas.</p>
+  </div>
+</section>

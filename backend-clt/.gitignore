@@ -1,0 +1,34 @@
+# Maven / Gradle
+target/
+.gradle/
+build/
+pom.xml.tag
+pom.releaseBackup
+pom.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Java / IDE
+*.class
+*.jar
+*.war
+*.ear
+*.log
+.idea/
+.vscode/
+*.iml
+.settings/
+.project
+.classpath
+
+# Spring Boot
+application-local.properties
+application-local.yml
+*.env
+
+# Sistema
+.DS_Store
+Thumbs.db

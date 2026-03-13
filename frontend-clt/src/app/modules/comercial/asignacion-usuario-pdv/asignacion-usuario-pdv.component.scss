@@ -1,0 +1,52 @@
+.container.form-control {
+  height: auto; /* Asegura que el contenedor tenga al menos 100px de alto */
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.mat-form-field {
+  margin-right: 8px; /* Ajusta el espaciado entre los campos como sea necesario */
+}
+
+.custom-select-width {
+  width: 130px; /* O el ancho que prefieras */
+}
+
+.custom-select-width2 {
+  width: 100px; /* O el ancho que prefieras */
+}
+
+/* En styles.css o en el CSS del componente con ViewEncapsulation.None */
+.custom-mat-table .mat-row,
+.custom-mat-table mat-row.mat-footer-row {
+  border-bottom: 1px solid #e0e0e0; /* Usa el color que prefieras */
+}
+.mat-expansion-panel-header-no-hover {
+  background-color: rgb(250, 255, 203);
+  color: rgb(0, 0, 0); /* Cambia el color del texto si es necesario */
+}
+
+.render {
+  width: 100%;
+}
+
+.scroll-grilla {
+  height: 500px;
+  overflow: auto;
+}
+
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000; /* Asegura que el spinner esté sobre otros elementos */
+}

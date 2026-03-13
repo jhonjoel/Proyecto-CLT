@@ -1,0 +1,2 @@
+-- Baseline CLT: esquema gestionado por Hibernate (spring.jpa.hibernate.ddl-auto=update).
+-- A partir de aquí se pueden añadir migraciones versionadas (V2__, V3__, ...) para datos o cambios de esquema.

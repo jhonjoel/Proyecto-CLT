@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Modal Nuevo Pedido: sin padding y altura fija para que el pie sea siempre visible */
+.nuevo-pedido-dialog-panel.cdk-overlay-pane {
+  max-height: 90vh;
+}
+
+.nuevo-pedido-dialog-panel .mat-mdc-dialog-container {
+  padding: 0;
+  overflow: hidden;
+  max-height: 90vh;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.nuevo-pedido-dialog-panel .mat-mdc-dialog-surface {
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}

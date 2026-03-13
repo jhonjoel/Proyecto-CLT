@@ -1,0 +1,149 @@
+<section class="content oms-order-list">
+  <div class="oms-header">
+    <app-breadcrumb
+      title="Gestión de Órdenes - OMS"
+      [items]="['Órdenes']"
+      active_item="Lista"
+    />
+    <button mat-raised-button color="primary" (click)="openNuevaOrdenModal()">
+      Nueva orden
+    </button>
+  </div>
+
+  <div class="oms-filters-row">
+    <mat-form-field appearance="outline" class="oms-search-field">
+      <mat-label>Buscar</mat-label>
+      <input
+        matInput
+        [(ngModel)]="filtroCliente"
+        (input)="onFilterChange()"
+        (keyup.enter)="applyFilters()"
+        placeholder="Cliente..."
+      />
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <mat-select
+        [(ngModel)]="filtroEstado"
+        (selectionChange)="onFilterChange()"
+      >
+        <mat-option [value]="null">Todos</mat-option>
+        @for (e of estados; track e) {
+          <mat-option [value]="e">{{ e }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Desde</mat-label>
+      <input
+        matInput
+        [matDatepicker]="pickerDesde"
+        [(ngModel)]="filtroFechaDesde"
+        (dateChange)="onFilterChange()"
+      />
+      <mat-datepicker-toggle matIconSuffix [for]="pickerDesde" />
+      <mat-datepicker #pickerDesde />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Hasta</mat-label>
+      <input
+        matInput
+        [matDatepicker]="pickerHasta"
+        [(ngModel)]="filtroFechaHasta"
+        (dateChange)="onFilterChange()"
+      />
+      <mat-datepicker-toggle matIconSuffix [for]="pickerHasta" />
+      <mat-datepicker #pickerHasta />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="applyFilters()">
+      Buscar
+    </button>
+  </div>
+
+  <div class="oms-table-wrap">
+    @if (loading()) {
+      <div class="oms-loading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    }
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      [matSortActive]="sortField"
+      [matSortDirection]="sortDirection"
+      (matSortChange)="onSortChange($event)"
+      class="oms-table"
+    >
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="id">ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="codigo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="codigo">Código</th>
+        <td mat-cell *matCellDef="let row">
+          <a [routerLink]="['/orders', row.id]" class="oms-code-link">#{{ row.codigo }}</a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="clienteNombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="clienteNombre">Cliente</th>
+        <td mat-cell *matCellDef="let row">{{ row.clienteNombre }}</td>
+      </ng-container>
+      <ng-container matColumnDef="fechaCreacion">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="fechaCreacion">Fecha</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.fechaCreacion | date : 'mediumDate' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="estado">Estado</th>
+        <td mat-cell *matCellDef="let row">
+          <span [class]="'oms-badge oms-badge-' + badgeClass(row.estado)">
+            {{ row.estado }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="total">Total</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="oms-total">₲ {{ row.total | number : '1.2-2' }}</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let row">
+          <a mat-icon-button [routerLink]="['/orders', row.id]" matTooltip="Ver detalle">
+            <mat-icon>visibility</mat-icon>
+          </a>
+          @if (row.estado !== 'CANCELADO' && row.estado !== 'COMPLETADO') {
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="confirmarCancelar(row)"
+              matTooltip="Cancelar"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          Sin resultados
+        </td>
+      </tr>
+    </table>
+    <mat-paginator
+      [length]="totalElements"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="[10, 25, 50]"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+      class="oms-paginator"
+    />
+  </div>
+</section>

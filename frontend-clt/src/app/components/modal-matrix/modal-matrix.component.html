@@ -1,0 +1,155 @@
+<div
+  class="float-right d-none d-sm-inline-block"
+  href="#"
+  data-toggle="modal"
+  data-target=".bd-example-modal-xx"
+></div>
+<div class="col-lg-20">
+  <div class="position-relative p-3 bg-navy">
+    <div class="center-content">
+      <b> ({{ promotor }}) {{ puntoVenta }}</b>
+      <b> TOTAL HORAS: {{ totalHora }}</b>
+    </div>
+  </div>
+</div>
+
+<mat-chip-listbox aria-label="Fish selection">
+  <mat-chip-option
+    [selected]="tipoAsignacion === 'Predeterminado'"
+    [value]="'Predeterminado'"
+    (click)="updateDias('Predeterminado', id, 'nameTipoAsignacion')"
+    >Predeterminado</mat-chip-option
+  >
+  <mat-chip-option
+    [selected]="tipoAsignacion === 'Backup'"
+    [value]="'Backup'"
+    (click)="updateDias('Backup', id, 'nameTipoAsignacion')"
+    >Backup</mat-chip-option
+  >
+</mat-chip-listbox>
+<mat-form-field>
+  <mat-label>Ingrese rango de fechas</mat-label>
+  <mat-date-range-input [rangePicker]="picker">
+    <input
+      matStartDate
+      placeholder="Start date"
+      [(ngModel)]="fechaInicio"
+      (dateChange)="capturarFechaInicio($event)"
+      name="start"
+    />
+    <input
+      matEndDate
+      placeholder="End date"
+      [(ngModel)]="fechaFin"
+      (dateChange)="capturarFechaFin($event)"
+      name="end"
+    />
+  </mat-date-range-input>
+
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-date-range-picker #picker></mat-date-range-picker>
+</mat-form-field>
+
+<section class="example-container mat-elevation-z8" tabindex="0">
+  <table mat-table [dataSource]="dataSource" class="mat-density-compact">
+    <!-- Columna Día -->
+    <ng-container matColumnDef="dia">
+      <th mat-header-cell *matHeaderCellDef>Día</th>
+      <td mat-cell *matCellDef="let element">{{ element.dia }}</td>
+    </ng-container>
+    <ng-container matColumnDef="secuencia">
+      <th mat-header-cell *matHeaderCellDef>Secuencia</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-button-toggle-group
+          name="fontStyle"
+          aria-label="Font Style"
+          [(value)]="element.secuencia"
+          (change)="updateDias($event.value, id, element.dia + '_S')"
+        >
+          <mat-button-toggle
+            *ngFor="let option of secuenciaOptions"
+            [value]="option"
+            >{{ option }}</mat-button-toggle
+          >
+        </mat-button-toggle-group>
+      </td></ng-container
+    >
+    <ng-container matColumnDef="pedido">
+      <th mat-header-cell *matHeaderCellDef>Pedido</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-chip-listbox aria-label="Fish selection">
+          <mat-chip-option
+            [selected]="element.pedido === 'SI'"
+            (click)="
+              element.pedido = 'SI';
+              updateDias(element.pedido, id, element.dia + '_P')
+            "
+            >Si</mat-chip-option
+          >
+          <mat-chip-option
+            [selected]="element.pedido === 'NO'"
+            (click)="
+              element.pedido = 'NO';
+              updateDias(element.pedido, id, element.dia + '_P')
+            "
+            >No</mat-chip-option
+          >
+        </mat-chip-listbox>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="entrega">
+      <th mat-header-cell *matHeaderCellDef>Entrega</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-chip-listbox aria-label="Fish selection">
+          <mat-chip-option
+            color="warn"
+            [selected]="element.entrega === 'SI'"
+            (click)="
+              element.entrega = 'SI';
+              updateDias(element.entrega, id, element.dia + '_E')
+            "
+            >Si</mat-chip-option
+          >
+          <mat-chip-option
+            color="warn"
+            [selected]="element.entrega === 'NO'"
+            (click)="
+              element.entrega = 'NO';
+              updateDias(element.entrega, id, element.dia + '_E')
+            "
+            >No</mat-chip-option
+          >
+        </mat-chip-listbox>
+      </td>
+    </ng-container>
+
+    <!-- Columna Tiempo -->
+    <ng-container matColumnDef="tiempo">
+      <th mat-header-cell *matHeaderCellDef>Tiempo</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field
+          class="custom-select-width"
+          (click)="pickerHoraEntrada.open()"
+        >
+          <input
+            matInput
+            [ngxMatTimepicker]="pickerHoraEntrada"
+            placeholder="Hora"
+            [format]="24"
+            [value]="element.tiempo"
+            [(ngModel)]="element.tiempo"
+            (ngModelChange)="updateDias(element.tiempo, id, element.dia)"
+            readonly
+          />
+        </mat-form-field>
+        <ngx-mat-timepicker
+          #pickerHoraEntrada
+          color="accent"
+        ></ngx-mat-timepicker>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</section>

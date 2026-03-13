@@ -1,0 +1,10 @@
+.mat-row,
+.mat-header-row {
+  min-height: 24px; /* Reduce la altura de las filas */
+}
+
+.mat-cell,
+.mat-header-cell {
+  padding: 4px; /* Reduce el padding de las celdas */
+  font-size: 12px; /* Reduce el tamaño de la fuente si es necesario */
+}

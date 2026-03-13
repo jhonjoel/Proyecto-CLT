@@ -1,0 +1,141 @@
+<div>
+  <!-- Left Sidebar -->
+  <aside
+    id="leftsidebar"
+    class="sidebar"
+    (mouseenter)="mouseHover()"
+    (mouseleave)="mouseOut()"
+  >
+    <!-- Menu -->
+    <div class="menu">
+      <ng-scrollbar [style.height]="listMaxHeight + 'px'" visibility="hover">
+        <ul class="list">
+          <li class="sidebar-user-panel">
+            <div class="user-panel"></div>
+            <div class="profile-usertitle">
+              <div class="sidebar-userpic-name">{{ usuario }}</div>
+              <div class="profile-usertitle-job">{{ area }}</div>
+            </div>
+          </li>
+          <!-- Top Most level menu -->
+          @for (sidebarItem of sidebarItems; track sidebarItem) {
+          <li
+            [routerLinkActive]="
+              sidebarItem.children.length !== 0 ? 'active' : 'active-top'
+            "
+          >
+            @if (sidebarItem.groupTitle === true) {
+            <div style="background-color: rgb(168, 163, 245)" class="header">
+              {{ sidebarItem.name }}
+            </div>
+            } @if (!sidebarItem.groupTitle;) {
+            <a
+              [routerLink]="
+                sidebarItem.class === '' ? [sidebarItem.ruta] : null
+              "
+              [ngClass]="[sidebarItem.class]"
+              (click)="callToggleMenu($event, sidebarItem.children.length)"
+              class="menu-top"
+            >
+              <i [ngClass]="[sidebarItem.iconType]">{{ sidebarItem.icono }}</i>
+              <span class="hide-menu">{{ sidebarItem.name }} </span>
+              @if (sidebarItem.badge !== '' ) {
+              <span [ngClass]="[sidebarItem.badgeClass]">{{
+                sidebarItem.badge
+              }}</span>
+              }
+            </a>
+            }
+            <!-- First level menu -->
+            @if (sidebarItem.children.length > 0) {
+            <ul class="ml-menu">
+              @for (sidebarSubItem1 of sidebarItem.children; track
+              sidebarSubItem1) {
+              <li
+                [routerLinkActive]="
+                  sidebarSubItem1.children.length > 0 ? '' : 'active'
+                "
+              >
+                <a
+                  [routerLink]="
+                    sidebarSubItem1.children.length > 0
+                      ? null
+                      : [sidebarSubItem1.ruta]
+                  "
+                  (click)="
+                    callToggleMenu($event, sidebarSubItem1.children.length)
+                  "
+                  [ngClass]="[sidebarSubItem1.class]"
+                >
+                  {{ sidebarSubItem1.name }}
+                </a>
+                <!-- Second level menu -->
+                @if (sidebarSubItem1.children.length > 0) {
+                <ul class="ml-menu-2">
+                  @for (sidebarSubItem2 of sidebarSubItem1.children; track
+                  sidebarSubItem2) {
+                  <li
+                    [routerLinkActive]="
+                      sidebarSubItem2.children.length > 0 ? '' : 'active'
+                    "
+                  >
+                    <a
+                      [routerLink]="
+                        sidebarSubItem2.children.length > 0
+                          ? null
+                          : [sidebarSubItem2.ruta]
+                      "
+                      (click)="
+                        callToggleMenu($event, sidebarSubItem2.children.length)
+                      "
+                      [ngClass]="[sidebarSubItem2.class]"
+                    >
+                      {{ sidebarSubItem2.name }}
+                    </a>
+                    <!-- Third level menu -->
+                    @if (sidebarSubItem2.children.length > 0) {
+                    <ul class="ml-menu-3">
+                      @for (sidebarSubItem3 of sidebarSubItem2.children; track
+                      sidebarSubItem3) {
+                      <li
+                        [routerLinkActive]="
+                          sidebarSubItem3.children.length > 0 ? '' : 'active'
+                        "
+                      >
+                        <a
+                          [routerLink]="
+                            sidebarSubItem3.children.length > 0
+                              ? null
+                              : [sidebarSubItem3.ruta]
+                          "
+                          (click)="
+                            callToggleMenu(
+                              $event,
+                              sidebarSubItem3.children.length
+                            )
+                          "
+                          [ngClass]="[sidebarSubItem3.class]"
+                        >
+                          {{ sidebarSubItem3.name }}
+                        </a>
+                      </li>
+                      }
+                    </ul>
+                    }
+                  </li>
+                  }
+                </ul>
+                }
+              </li>
+              }
+            </ul>
+            }
+          </li>
+          }
+        </ul>
+      </ng-scrollbar>
+    </div>
+    <!-- #Menu -->
+  </aside>
+  <!-- #END# Left Sidebar -->
+</div>

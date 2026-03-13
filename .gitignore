@@ -1,0 +1,25 @@
+# IDE / Editor
+.vscode/
+.idea/
+.cursor/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Frontend (Angular)
+frontend-clt/node_modules/
+frontend-clt/dist/
+frontend-clt/.angular/
+
+# Backend (Java / Maven / Gradle)
+backend-clt/target/
+backend-clt/.gradle/
+backend-clt/build/
+
+# Variables de entorno
+.env
+*.env.local
+
+# Archivos temporales
+**/Untitled

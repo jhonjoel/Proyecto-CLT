@@ -1,0 +1,26 @@
+@if (!showLoading) {
+<mat-form-field class="example-full-width">
+  <mat-select
+    [formControl]="ocrdCtrl"
+    placeholder="Punto de ventas"
+    #singleSelect
+    (selectionChange)="onSelected($event.value)"
+  >
+    <ngx-mat-select-search
+      [formControl]="ocrdFilterCtrl"
+      noEntriesFoundLabel="'No se encontraron resultados'"
+      placeholderLabel="Encuentra el punto de venta"
+    ></ngx-mat-select-search>
+    <mat-option *ngIf="showLoading" class="loading-option" disabled>
+      <mat-spinner diameter="16"></mat-spinner> Cargando puntos de ventas...
+    </mat-option>
+    <mat-option *ngFor="let ocrd of filteredOcrd | async" [value]="ocrd">
+      {{ ocrd.Address }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+} @if (showLoading) {
+<div class="loading-indicator">
+  <mat-spinner diameter="30"></mat-spinner>
+</div>
+}

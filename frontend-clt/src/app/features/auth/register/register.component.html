@@ -1,0 +1,90 @@
+<!-- Diseño Stitch: Registro - YTrack OMS (sin modificar parte de imagen) -->
+<div class="auth-container">
+  <div class="row auth-main">
+    <div class="col-sm-6 px-0 d-none d-sm-block">
+      <div class="left-img" style="background-color: rgb(0, 0, 0)">
+        <img src="assets/images/ytrack/ytrack2.png" alt="YTrack OMS" />
+      </div>
+    </div>
+    <div class="col-sm-6 auth-form-section">
+      <div class="form-section">
+        <div class="auth-wrapper oms-register-wrapper">
+          <h2 class="oms-register-title">Crea tu cuenta</h2>
+          <p class="oms-register-subtitle">Regístrate para comenzar a explorar todas las funciones.</p>
+          <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()" autocomplete="off">
+            <mat-form-field class="oms-full-width" appearance="outline">
+              <mat-label>Nombre Completo</mat-label>
+              <input matInput formControlName="nombre" placeholder="Ej: Juan Pérez" autocomplete="name" />
+              <mat-icon matPrefix class="oms-field-icon">person</mat-icon>
+              @if (authForm.get('nombre')?.hasError('required') && authForm.get('nombre')?.touched) {
+                <mat-error>Este campo es requerido</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="oms-full-width" appearance="outline">
+              <mat-label>Correo Electrónico</mat-label>
+              <input matInput type="email" formControlName="email" placeholder="correo@ejemplo.com" autocomplete="off" />
+              <mat-icon matPrefix class="oms-field-icon">mail</mat-icon>
+              @if (authForm.get('email')?.hasError('required') && authForm.get('email')?.touched) {
+                <mat-error>Este campo es requerido</mat-error>
+              }
+              @if (authForm.get('email')?.hasError('email') && authForm.get('email')?.touched) {
+                <mat-error>Formato de correo inválido</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="oms-full-width" appearance="outline">
+              <mat-label>Contraseña</mat-label>
+              <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
+              <mat-icon matPrefix class="oms-field-icon">lock</mat-icon>
+              <button type="button" mat-icon-button matSuffix (click)="hide = !hide" tabindex="-1">
+                <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (authForm.get('password')?.hasError('required') && authForm.get('password')?.touched) {
+                <mat-error>La contraseña es requerida</mat-error>
+              }
+              @if (authForm.get('password')?.hasError('minlength') && authForm.get('password')?.touched) {
+                <mat-error>La contraseña debe tener al menos 6 caracteres</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="oms-full-width" appearance="outline">
+              <mat-label>Confirmar Contraseña</mat-label>
+              <input matInput [type]="chide ? 'password' : 'text'" formControlName="confirmPassword" placeholder="Repetir contraseña" autocomplete="new-password" />
+              <mat-icon matPrefix class="oms-field-icon">lock</mat-icon>
+              <button type="button" mat-icon-button matSuffix (click)="chide = !chide" tabindex="-1">
+                <mat-icon>{{ chide ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (authForm.get('confirmPassword')?.hasError('required') && authForm.get('confirmPassword')?.touched) {
+                <mat-error>Debes confirmar la contraseña</mat-error>
+              }
+              @if (authForm.hasError('passwordMismatch') && authForm.get('confirmPassword')?.touched) {
+                <mat-error>Las contraseñas no coinciden</mat-error>
+              }
+            </mat-form-field>
+            @if (showTurnstile) {
+              <div class="oms-turnstile-wrap">
+                <ngx-turnstile [siteKey]="turnstileSiteKey" formControlName="turnstileToken" theme="light" size="normal"></ngx-turnstile>
+              </div>
+              @if (authForm.get('turnstileToken')?.invalid && authForm.get('turnstileToken')?.touched) {
+                <div class="oms-auth-error">Debes completar la verificación de seguridad.</div>
+              }
+            }
+            @if (error) {
+              <div class="oms-auth-error">{{ error }}</div>
+            }
+            <button mat-raised-button color="primary" class="oms-auth-btn" [disabled]="!authForm.valid || loading" type="submit">
+              {{ loading ? 'Registrando...' : 'Registrarse' }}
+            </button>
+            <div class="oms-auth-divider">
+              <span>O</span>
+            </div>
+            <p class="oms-auth-register">
+              ¿Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesión</a>
+            </p>
+          </form>
+        </div>
+        <footer class="oms-auth-footer">
+          © 2026 CLT S.A. Todos los derechos reservados. Privacidad • Términos
+        </footer>
+      </div>
+    </div>
+  </div>
+</div>

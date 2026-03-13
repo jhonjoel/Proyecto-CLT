@@ -1,0 +1,15 @@
+/* Logo CLT adaptado para el header - centrado */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.header-logo {
+  max-height: 40px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}

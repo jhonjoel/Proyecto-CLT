@@ -1,0 +1,41 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+    <div class="container form-control" style="height: 200px">
+      <br />
+      <strong><a></a></strong>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Nombre del rol nuevo</mat-label>
+        <input matInput placeholder="Ingrese" name="rol" [(ngModel)]="rol" />
+      </mat-form-field>
+
+      <div class="modal-footer align-right">
+        <button
+          *ngIf="!isLoading"
+          mat-raised-button
+          color="primary"
+          (click)="RegistrarRol()"
+        >
+          <mat-icon>track_changes</mat-icon> Registrar
+        </button>
+        <button mat-raised-button color="primary" *ngIf="isLoading">
+          Registrando...
+          <mat-icon
+            ><mat-spinner color="accent" diameter="19"> </mat-spinner
+          ></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

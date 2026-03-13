@@ -1,0 +1,86 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+
+    <div class="container">
+      <mat-form-field class="example-full-width">
+        <mat-label>Nombre</mat-label>
+        <input
+          matInput
+          placeholder="Ingrese"
+          name="nombre"
+          [(ngModel)]="nombre"
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field class="example-full-width">
+        <mat-label>Apellido</mat-label>
+        <input
+          matInput
+          placeholder="Ingrese"
+          name="apellido"
+          [(ngModel)]="apellido"
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field class="example-full-width">
+        <mat-label>Usuario login</mat-label>
+        <input
+          matInput
+          placeholder="Ingrese"
+          name="username"
+          [(ngModel)]="username"
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field class="example-full-width">
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          placeholder="Ingrese"
+          name="pass"
+          [(ngModel)]="pass"
+          (input)="showPasswordWarning = isWeakPassword()"
+          required
+        />
+        <div *ngIf="showPasswordWarning" class="text-danger">
+          La contraseña es débil. Debe contener al menos una letra mayúscula,
+          tener al menos 6 caracteres de longitud y no debe contener números
+          consecutivos en orden (por ejemplo, "123456789").
+        </div>
+      </mat-form-field>
+
+      <br />
+      <app-select-rol
+        (rolSeleccionado)="handleRolSeleccionado($event)"
+      ></app-select-rol>
+
+      <div class="modal-footer align-right">
+        <button
+          *ngIf="!isLoading"
+          mat-raised-button
+          color="primary"
+          (click)="RegistrarUsuario()"
+        >
+          <mat-icon>track_changes</mat-icon> Registrar
+        </button>
+        <button mat-raised-button color="primary" *ngIf="isLoading">
+          Registrando...
+          <mat-icon
+            ><mat-spinner color="accent" diameter="19"> </mat-spinner
+          ></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

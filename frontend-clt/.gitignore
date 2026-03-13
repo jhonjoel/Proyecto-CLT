@@ -1,0 +1,23 @@
+# Dependencias
+/node_modules/
+
+# Archivos de compilación
+/dist/
+
+# Angular cache
+/.angular/cache/
+
+# Archivos de configuración de IDE y editor
+/.vscode/
+/.idea/
+/.cursor/
+
+# Archivos específicos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración de Docker
+/docker/
+
+# Archivos de ambiente
+*.env

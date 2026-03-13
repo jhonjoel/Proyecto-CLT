@@ -1,0 +1,23 @@
+<mat-form-field class="example-full-width">
+  <mat-select
+    [formControl]="horariosCtrl"
+    placeholder="Horarios"
+    #singleSelect
+    (selectionChange)="onSelected($event.value)"
+  >
+    <ngx-mat-select-search
+      [formControl]="horariosFilterCtrl"
+      noEntriesFoundLabel="'No se encontraron resultados'"
+      placeholderLabel="Encuentra el horario"
+    ></ngx-mat-select-search>
+    <mat-option *ngIf="showLoading" class="loading-option" disabled>
+      <mat-spinner diameter="16"></mat-spinner> Cargando horarios...
+    </mat-option>
+    <mat-option
+      *ngFor="let horarios of filteredHorario | async"
+      [value]="horarios"
+    >
+      {{ horarios.descripcion }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

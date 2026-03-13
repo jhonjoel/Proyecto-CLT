@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+table {
+  width: 100%;
+}
+.example-container {
+  height: 500px;
+  overflow: auto;
+}
+.render {
+  width: 100%;
+}
+
+td,
+th {
+  width: 25%;
+}

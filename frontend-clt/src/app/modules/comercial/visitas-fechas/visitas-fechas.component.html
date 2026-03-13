@@ -1,0 +1,292 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    }
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Ingrese rango de fechas</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input
+            matStartDate
+            placeholder="Start date"
+            [(ngModel)]="fechaCalendario"
+          />
+          <input
+            matEndDate
+            placeholder="End date"
+            [(ngModel)]="fechaCalendario2"
+          />
+        </mat-date-range-input>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <button
+        *ngIf="!isLoading"
+        mat-raised-button
+        color="primary"
+        (click)="fetchListado()"
+      >
+        <mat-icon>track_changes</mat-icon> Buscar
+      </button>
+      <button mat-raised-button color="primary" *ngIf="isLoading">
+        Buscando...
+        <mat-icon
+          ><mat-spinner color="accent" diameter="19"> </mat-spinner
+        ></mat-icon>
+      </button>
+    </div>
+
+    <mat-form-field class="render">
+      <mat-label>Filtro</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Ej. Promotor/a"
+        #input
+      />
+    </mat-form-field>
+
+    <button mat-raised-button class="green-button" (click)="exportArray()">
+      <mat-icon>insert_drive_file</mat-icon> Exportar a Excel
+    </button>
+    <button mat-raised-button class="green-button" (click)="exportToExcel()">
+      <mat-icon>insert_drive_file</mat-icon> Exportar a Excel Agrupados
+    </button>
+    <section class="example-container mat-elevation-z8" tabindex="0">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="mat-elevation-z8"
+        matSort
+      >
+        <!-- Columnas de la tabla -->
+        <ng-container matColumnDef="secuencia">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Secuencia</th>
+          <td mat-cell *matCellDef="let visita">{{ visita.secuencia }}</td>
+        </ng-container>
+        <ng-container matColumnDef="rol">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
+          <td mat-cell *matCellDef="let visita">
+            <ng-container *ngIf="visita.rol === '0'; else notZero">
+              <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                >error_outline</mat-icon
+              >
+            </ng-container>
+            <ng-template #notZero>{{ visita.rol }}</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="usuarioLogin">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CI</th>
+          <td mat-cell *matCellDef="let visita">{{ visita.usuarioLogin }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="usuario">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
+          <td mat-cell *matCellDef="let visita">
+            {{ visita.usuario }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ocrdName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Punto de venta
+          </th>
+
+          <td mat-cell *matCellDef="let visita">
+            <ng-container *ngIf="visita.ocrdName === '0'; else notZero">
+              <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                >error_outline</mat-icon
+              >
+            </ng-container>
+            <ng-template #notZero>{{ visita.ocrdName }}</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="NombreDia">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Dia</th>
+          <td mat-cell *matCellDef="let visita">
+            {{ visita.NombreDia }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+          <td mat-cell *matCellDef="let visita">
+            {{ visita.fecha }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="inicio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Hora de inicio
+          </th>
+          <td mat-cell *matCellDef="let visita">{{ visita.inicio }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fin">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Hora de Finalizacion
+          </th>
+          <td mat-cell *matCellDef="let visita">{{ visita.fin }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="permanencia">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Permanencia</th>
+          <td mat-cell *matCellDef="let visita">{{ visita.permanencia }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="llegadaTardiaInicio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Llegada tarde
+          </th>
+          <td mat-cell *matCellDef="let visita">
+            <ng-container
+              *ngIf="visita.llegadaTardiaInicio === '0'; else notZero"
+            >
+              <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                >error_outline</mat-icon
+              >
+            </ng-container>
+            <ng-template #notZero>{{ visita.llegadaTardiaInicio }}</ng-template>
+
+            <ng-container
+              *ngIf="
+                visita.llegadaTardiaInicio === 'SI' ||
+                visita.llegadaTardiaInicio === 'si'
+              "
+            >
+              <mat-icon matBadge="1" style="color: rgb(255, 0, 0)"
+                >notifications</mat-icon
+              >
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipoCierre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Tipo de cierre
+          </th>
+          <td mat-cell *matCellDef="let visita">
+            <ng-container *ngIf="visita.tipoCierre === '0'; else notZero">
+              <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                >error_outline</mat-icon
+              >
+            </ng-container>
+            <ng-template #notZero>{{ visita.tipoCierre }}</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bateriaInicio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Bateria al iniciar
+          </th>
+          <td mat-cell *matCellDef="let visita">
+            <ng-container>
+              <mat-icon
+                *ngIf="visita.bateriaInicio > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="visita.bateriaInicio >= 20 && visita.bateriaInicio <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="visita.bateriaInicio > 0 && visita.bateriaInicio <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="visita.bateriaInicio === 0; else notZero">
+                <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                  >error_outline</mat-icon
+                >
+              </ng-container>
+              <ng-template #notZero>{{ visita.bateriaInicio }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bateriaFin">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Bateria al finalizar
+          </th>
+
+          <td mat-cell *matCellDef="let visita">
+            <ng-container>
+              <mat-icon
+                *ngIf="visita.bateriaFin > 80"
+                style="color: green"
+                class="battery-icon"
+                >battery_saver</mat-icon
+              >
+              <mat-icon
+                *ngIf="visita.bateriaFin >= 20 && visita.bateriaFin <= 80"
+                style="color: rgb(245, 149, 24)"
+                class="battery-icon"
+                >battery_std</mat-icon
+              >
+              <mat-icon
+                *ngIf="visita.bateriaFin > 0 && visita.bateriaFin <= 19"
+                style="color: rgb(255, 0, 0)"
+                class="battery-icon"
+                >battery_alert</mat-icon
+              >
+
+              <ng-container *ngIf="visita.bateriaFin === 0; else notZero">
+                -
+              </ng-container>
+              <ng-template #notZero>{{ visita.bateriaFin }}</ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="versionAPP">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Version App</th>
+          <td mat-cell *matCellDef="let visita">
+            <ng-container *ngIf="visita.versionAPP === '0'; else notZero">
+              <mat-icon style="color: rgb(255, 0, 0)" class="error_outline"
+                >error_outline</mat-icon
+              >
+            </ng-container>
+            <ng-template #notZero>{{ visita.versionAPP }}</ng-template>
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr mat-row *matRowDef="let visita; columns: displayedColumns"></tr>
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *ngIf="noData">
+          <td class="mat-cell" colspan="11">
+            No se encontraron datos de visitas
+          </td>
+        </tr>
+      </table>
+      <mat-paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 25, 50, 75, 100]"
+      ></mat-paginator>
+    </section>
+    <!-- Mensaje cuando no hay datos -->
+  </div>
+</section>

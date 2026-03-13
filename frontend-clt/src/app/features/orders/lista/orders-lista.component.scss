@@ -1,0 +1,70 @@
+.example-container {
+  height: calc(100vh - 360px);
+  overflow: auto;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filter-row mat-form-field {
+  min-width: 140px;
+}
+
+.block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+}
+
+::ng-deep .mat-mdc-header-row {
+  background-color: #556cec;
+}
+
+::ng-deep .mat-mdc-header-row .mat-mdc-header-cell {
+  color: #fff;
+}
+
+::ng-deep .mat-mdc-row {
+  height: 44px;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-PENDIENTE,
+.badge-warning {
+  background-color: #ff9800;
+  color: #fff;
+}
+
+.badge-EN_PROCESO,
+.badge-info {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.badge-COMPLETADO,
+.badge-success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.badge-CANCELADO,
+.badge-danger {
+  background-color: #f44336;
+  color: #fff;
+}

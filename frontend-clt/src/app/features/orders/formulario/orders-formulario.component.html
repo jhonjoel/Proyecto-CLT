@@ -1,0 +1,207 @@
+@if (data?.isModal) {
+  <!-- Diseño Stitch: modal Nuevo Pedido -->
+  <div class="nuevo-pedido-modal">
+    <header class="modal-header">
+      <div class="modal-header-left">
+        <mat-icon class="modal-header-icon">receipt_long</mat-icon>
+        <h2 class="modal-title">{{ data?.order ? 'Editar Pedido' : 'Nuevo Pedido' }}</h2>
+      </div>
+      <button mat-icon-button type="button" (click)="dialogRef?.close()" aria-label="Cerrar" class="modal-close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="modal-content">
+        <section class="section-customer">
+          <label class="label-uppercase" for="clienteNombre">Nombre del Cliente</label>
+          <div class="input-with-icon">
+            <mat-icon class="input-icon">person</mat-icon>
+            <input
+              id="clienteNombre"
+              type="text"
+              class="input-field"
+              formControlName="clienteNombre"
+              placeholder="Ingrese nombre completo del cliente"
+            />
+          </div>
+          @if (form.get('clienteNombre')?.invalid && form.get('clienteNombre')?.touched) {
+            <span class="error-text">El nombre del cliente es obligatorio</span>
+          }
+        </section>
+
+        <section class="section-lines">
+          <div class="lines-header">
+            <h3 class="lines-title">Líneas de Pedido</h3>
+            <button type="button" class="btn-agregar" (click)="agregarItem()">
+              <mat-icon class="btn-agregar-icon">add_circle</mat-icon>
+              Agregar Producto
+            </button>
+          </div>
+          <div class="table-wrap" formArrayName="items">
+            <table class="lines-table">
+              <thead>
+                <tr>
+                  <th class="col-descripcion">Descripción</th>
+                  <th class="col-cantidad">Cantidad</th>
+                  <th class="col-precio">Precio Unit.</th>
+                  <th class="col-subtotal">Subtotal</th>
+                  <th class="col-actions"></th>
+                </tr>
+              </thead>
+              <tbody class="lines-tbody">
+                @for (item of items.controls; track $index) {
+                  <tr class="line-row" [formGroupName]="$index">
+                    <td class="col-descripcion">
+                      <input
+                        class="cell-input"
+                        type="text"
+                        formControlName="descripcion"
+                        placeholder="Ej: Laptop Dell"
+                      />
+                    </td>
+                    <td class="col-cantidad">
+                      <input
+                        class="cell-input cell-input-num"
+                        type="number"
+                        formControlName="cantidad"
+                        min="1"
+                      />
+                    </td>
+                    <td class="col-precio">
+                      <span class="currency-inline">₲</span>
+                      <input
+                        class="cell-input cell-input-num"
+                        type="number"
+                        formControlName="precioUnitario"
+                        min="0"
+                        step="0.01"
+                        inputmode="decimal"
+                      />
+                    </td>
+                    <td class="col-subtotal"><span class="currency-symbol">₲</span>{{ getSubtotal($index) | number: '1.2-2' }}</td>
+                    <td class="col-actions">
+                      <button
+                        type="button"
+                        class="btn-delete"
+                        (click)="quitarItem($index)"
+                        [disabled]="items.length <= 1"
+                        aria-label="Eliminar línea"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          @if (form.get('items')?.invalid && form.get('items')?.touched && items.length === 0) {
+            <p class="error-text">Debe agregar al menos un item.</p>
+          }
+        </section>
+      </div>
+
+      @if (errorMessage) {
+        <p class="error-text modal-error">{{ errorMessage }}</p>
+      }
+
+      <footer class="modal-footer">
+        <div class="footer-summary">
+          <div class="footer-total-block">
+            <span class="label-uppercase footer-label">Total del Pedido</span>
+            <div class="footer-total-amount"><span class="footer-currency">₲</span>{{ totalOrder | number: '1.2-2' }}</div>
+          </div>
+          <div class="footer-details">
+            <span>Items: {{ itemsCount }}</span>
+            <span>Cant. Total: {{ cantTotal }}</span>
+          </div>
+        </div>
+        <div class="footer-actions">
+          <button type="button" class="btn-cancel" (click)="dialogRef?.close()">Cancelar</button>
+          <button type="submit" class="btn-save" [disabled]="form.invalid || loading">
+            <mat-icon>save</mat-icon>
+            {{ loading ? 'Guardando...' : 'Guardar Pedido' }}
+          </button>
+        </div>
+      </footer>
+    </form>
+  </div>
+} @else {
+  <!-- Vista ruta /orders/nueva -->
+  <section class="content">
+    <div class="content-block">
+      <div class="block-header">
+        <app-breadcrumb
+          title="Órdenes de compra"
+          [items]="['Órdenes']"
+          active_item="Nueva orden"
+        />
+        <a mat-button routerLink="/orders">Volver a lista</a>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nombre del cliente</mat-label>
+          <input matInput formControlName="clienteNombre" placeholder="Ej. Cliente SA" />
+          @if (form.get('clienteNombre')?.invalid && form.get('clienteNombre')?.touched) {
+            <mat-error>El nombre del cliente es obligatorio</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="items-header">
+          <h3>Items de la orden</h3>
+          <button type="button" mat-stroked-button color="primary" (click)="agregarItem()">
+            Agregar item
+          </button>
+        </div>
+
+        <div formArrayName="items" class="items-list">
+          <ng-container *ngFor="let item of items.controls; let i = index">
+            <div class="item-row" [formGroupName]="i">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Descripción</mat-label>
+                <input matInput formControlName="descripcion" placeholder="Producto o servicio" />
+                @if (item.get('descripcion')?.invalid && item.get('descripcion')?.touched) {
+                  <mat-error>Requerido</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic" class="cantidad">
+                <mat-label>Cantidad</mat-label>
+                <input matInput type="number" formControlName="cantidad" min="1" />
+                @if (item.get('cantidad')?.invalid && item.get('cantidad')?.touched) {
+                  <mat-error>Mínimo 1</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic" class="precio">
+                <mat-label>Precio unitario</mat-label>
+                <input matInput type="number" formControlName="precioUnitario" min="0" step="0.01" />
+                @if (item.get('precioUnitario')?.invalid && item.get('precioUnitario')?.touched) {
+                  <mat-error>Mínimo 0</mat-error>
+                }
+              </mat-form-field>
+              <button type="button" mat-icon-button color="warn" (click)="quitarItem(i)" [disabled]="items.length <= 1">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+
+        @if (form.get('items')?.invalid && form.get('items')?.touched && items.length === 0) {
+          <p class="error-text">Debe agregar al menos un item.</p>
+        }
+
+        @if (errorMessage) {
+          <p class="error-text">{{ errorMessage }}</p>
+        }
+
+        <div class="form-actions">
+          <button mat-button type="button" routerLink="/orders">Cancelar</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
+            {{ loading ? 'Guardando...' : 'Crear orden' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+}

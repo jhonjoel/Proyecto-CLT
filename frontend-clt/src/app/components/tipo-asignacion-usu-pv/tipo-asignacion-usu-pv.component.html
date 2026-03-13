@@ -1,0 +1,11 @@
+<mat-form-field class="example-full-width">
+  <mat-select
+    [formControl]="usuarioCtrl"
+    placeholder="Selecciona tipo"
+    (selectionChange)="onUsuarioSelected($event.value)"
+  >
+    <mat-option *ngFor="let tipo of tiposAsignaciones" [value]="tipo">
+      {{ tipo.nombre }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
