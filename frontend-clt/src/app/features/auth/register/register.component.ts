@@ -54,8 +54,8 @@ export class RegisterComponent implements OnInit {
   hide = true;
   chide = true;
 
-  /** Turnstile solo en desarrollo/pruebas; en producción no se muestra. */
-  readonly showTurnstile = !environment.production;
+  /** Turnstile siempre visible (demo/producción con site key de prueba). */
+  readonly showTurnstile = true;
   readonly turnstileSiteKey = environment.turnstileSiteKey;
 
   constructor(
