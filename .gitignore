@@ -23,3 +23,14 @@ backend-clt/build/
 
 # Archivos temporales
 **/Untitled
+
+# Documentación de evaluación / verificación
+VERIFICACION_REQUISITOS_OMS.md
+VERIFICACION_PRUEBA_TECNICA_BACKEND.md
+EVALUACION_PRUEBA_TECNICA_COMPLETA.md
+EVALUACION_CRITERIOS_BACKEND.md
+API_CONSUMO_FRONTEND.md
+
+# Otros
+.gitignore
+frontend-clt/.cursor/
