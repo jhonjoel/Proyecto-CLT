@@ -1,5 +1,12 @@
-
-/e2e
+node_modules
+dist
+.angular
 .git
-
-/node_modules
+*.md
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+*.tsbuildinfo
