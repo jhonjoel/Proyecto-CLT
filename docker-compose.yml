@@ -9,7 +9,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_NAME:-clt}"]
       interval: 5s
@@ -33,10 +33,10 @@ services:
       # Correo y contraseña para restablecer contraseña (forgot-password)
       MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
       MAIL_PORT: ${MAIL_PORT:-587}
-      MAIL_USER: ${MAIL_USER}
-      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_USER: ${MAIL_USER:-jhonathanjoel.bernal@gmail.com}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-iyqm jcph pmjo enzs}
     ports:
-      - "8080:8080"
+      - "8081:8080"
 
   frontend:
     build:
