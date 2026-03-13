@@ -1,6 +1,6 @@
 # Proyecto CLT
 
-Aplicación web completa con backend Spring Boot 3, frontend Angular 17 y PostgreSQL 16.
+Aplicación web completa con backend Spring Boot 3, frontend Angular 17 y PostgreSQL 16. Incluye login/registro con JWT, restablecimiento de contraseña, Cloudflare Turnstile y documentación OpenAPI (Swagger).
 
 ## Requisitos
 
@@ -9,9 +9,11 @@ Aplicación web completa con backend Spring Boot 3, frontend Angular 17 y Postgr
 
 ## Levantar con Docker Compose
 
-Desde la raíz del proyecto:
+Clona el repositorio y, desde la raíz del proyecto:
 
 ```bash
+git clone https://github.com/jhonjoel/Proyecto-CLT.git
+cd Proyecto-CLT
 docker compose up -d
 ```
 
@@ -42,6 +44,10 @@ docker compose up -d --build
 - **OpenAPI JSON:** http://localhost:8080/v3/api-docs
 
 El login desde la app (http://localhost:4200) usa el proxy interno al backend; no hace falta acceder por 8080 en el navegador para usar la aplicación.
+
+### Cloudflare Turnstile (login, registro, olvidé contraseña)
+
+El frontend integra [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/) como CAPTCHA en las pantallas de login, registro y restablecimiento de contraseña. El widget se muestra tanto en desarrollo como en la build de producción (Docker), usando la **site key de prueba** de Cloudflare (`1x00000000000000000000AA`) para demos; en un despliegue real se puede sustituir por la site key de producción en las variables de entorno.
 
 ## Variables de entorno (opcional)
 
@@ -86,8 +92,9 @@ docker compose up -d --build
 
 ```
 Proyecto-CLT/
-├── backend-clt/    # Spring Boot 3, JWT, PostgreSQL
-├── frontend-clt/   # Angular 17
+├── backend-clt/       # Spring Boot 3, JWT, PostgreSQL, Flyway
+├── frontend-clt/      # Angular 17, Angular Material, Turnstile
 ├── docker-compose.yml
+├── .env               # opcional; no versionado
 └── README.md
 ```
